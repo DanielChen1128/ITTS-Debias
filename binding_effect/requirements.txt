@@ -1,0 +1,19 @@
+# Shared generation and acoustic-analysis dependencies.
+# Install PyTorch and each TTS backend separately as documented in setup.txt.
+numpy>=1.23.5,<2
+pandas>=1.5,<3
+soundfile>=0.12,<1
+librosa>=0.10,<1
+tqdm>=4.65,<5
+audonnx>=0.7,<1
+audeer>=2,<3
+
+# PromptTTS++ runtime helpers (the backend itself is an external checkout).
+hydra-core>=1.3,<1.4
+omegaconf>=2.3,<2.4
+antlr4-python3-runtime==4.9.*
+g2p_en>=2.1,<3
+nltk>=3.8,<4
+
+# Optional semantic analysis:
+# sentence-transformers>=2.7,<4

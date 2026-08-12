@@ -1,0 +1,82 @@
+{
+  "schema_version": 5,
+  "paper_expected_total": 13300,
+  "paper_stage1_expected_total": 6900,
+  "repository_total": 6900,
+  "missing_from_complete_protocol": 6400,
+  "stage1_reconstruction_alignment": true,
+  "canonical_stage1_hashes_match": true,
+  "canonical_stage1_alignment": true,
+  "paper_count_alignment": false,
+  "reconstruction_protocol_alignment": false,
+  "content_identity_verified": false,
+  "exact_paper_reproduction_available": false,
+  "missing_by_file": {
+    "descriptions_two_axis.json": 3200,
+    "descriptions_multi_axis.json": 3200
+  },
+  "count_mismatches": {
+    "descriptions_two_axis.json": {
+      "expected": 3200,
+      "actual": 0
+    },
+    "descriptions_multi_axis.json": {
+      "expected": 3200,
+      "actual": 0
+    }
+  },
+  "unexpected_json_files": [],
+  "files": [
+    {
+      "file": "descriptions/description_career_bias.json",
+      "count": 2700,
+      "sha256": "faffa2b10ce4cdc201054fe6470270028c2a9f373d5c9ba60fd521ff45ead1fd",
+      "duplicate_description_transcript_tuples": 0,
+      "structure": {
+        "expected_cells": 27,
+        "actual_cells": 27,
+        "expected_prompts_per_cell": 100,
+        "actual_cells_by_axis": {
+          "career": 27
+        },
+        "incomplete_cells": {}
+      },
+      "errors": [],
+      "protocol_errors": []
+    },
+    {
+      "file": "descriptions/descriptions_persona_bias.json",
+      "count": 4000,
+      "sha256": "ee973d75bc12118f0165a658c64d6ff77ea49561b5bbbd0383254381a067469f",
+      "duplicate_description_transcript_tuples": 300,
+      "structure": {
+        "expected_cells": 40,
+        "actual_cells": 40,
+        "expected_prompts_per_cell": 100,
+        "actual_cells_by_axis": {
+          "persona": 40
+        },
+        "incomplete_cells": {}
+      },
+      "errors": [],
+      "protocol_errors": []
+    },
+    {
+      "file": "descriptions/descriptions_status_bias.json",
+      "count": 200,
+      "sha256": "ff729a1bace361d8bed732a1d27ad58bd0646eaf270eaadd69670f86ed6f88b9",
+      "duplicate_description_transcript_tuples": 0,
+      "structure": {
+        "expected_cells": 2,
+        "actual_cells": 2,
+        "expected_prompts_per_cell": 100,
+        "actual_cells_by_axis": {
+          "status": 2
+        },
+        "incomplete_cells": {}
+      },
+      "errors": [],
+      "protocol_errors": []
+    }
+  ]
+}

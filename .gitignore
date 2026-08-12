@@ -1,0 +1,7 @@
+# Third-party literature is retained locally but not redistributed.
+papers/*.pdf
+
+# Local tools and caches.
+.cache/
+__pycache__/
+*.py[cod]

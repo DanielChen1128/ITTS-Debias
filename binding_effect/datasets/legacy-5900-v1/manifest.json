@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "dataset_id": "legacy-5900-v1",
+  "status": "immutable-experiment-snapshot",
+  "source_binding_commit": "dc5758f9673cb05b1e4fae09d5f31155116f8e8c",
+  "record_count": 5900,
+  "lemma_count": 98,
+  "composition": {
+    "career": 2700,
+    "persona": 1000,
+    "status": 200,
+    "two_axis_legacy": 1200,
+    "multi_axis_legacy": 800
+  },
+  "files": {
+    "descriptions/description_career_bias.json": "89f035079ef38d619cbb9414b55fbefa75e441590fe77be6a49dc7c4c483503f",
+    "descriptions/descriptions_persona_bias.json": "5cba5fdd33fd93ca642e760b24dbb94466059028f425c9322edabe898d23fda5",
+    "descriptions/descriptions_status_bias.json": "d83fc2fbb6c0762de2de5f20fa91c2e96c381134fa35075ca6d140e74652c61b",
+    "descriptions/descriptions_two_axis.json": "92bb498e2ae283c283c4b3deefdae16abfb4b6b822e37334d4574ae92838273e",
+    "descriptions/descriptions_multi_axis.json": "dc338e288b2b0223a12e3cb77b841d66d3c879e4a48cd4995f25050361cdb260",
+    "data/anchors_fit.json": "ad1a11ac63a3cde43bd8e2d091dd28cf1d7858aa963334ae504c481f071e36e3",
+    "data/anchors.json": "6fb604e388c616ac54d5f5fbee1a5a6f5bd6d5b81e311d5254693f9c1aa1f125",
+    "data/main.json": "dc901f9fcf08fe431cb9040f2a5def47467d4ca6476a0beece5fe6e9d5d89dfe",
+    "data/neutral.json": "d5baa48059bfb1bc157881a378b8672dadd625ccf2b69eb71d5dcbb41b6049f3",
+    "data/pilot.json": "a9b59fc0f5b40406245d5631f1e0249a1ea19f88e7a45c4411a1bfe5cea2d5b7",
+    "data/pilot_std.json": "daf535e727cf0c427c48f193ad68d706563d200d48b21a5ba40b5bf1cb1ec68b",
+    "data/splits.json": "de889cb5fc3486a9cb68d18b6fa66473f991f7f1bb30e2ebfffbad910e98c636"
+  }
+}

@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Debiasing Instruction TTS — Research Questions</title>
+<style>
+  :root{
+    --bg:#0b1020;
+    --bg2:#111a33;
+    --card:#16203c;
+    --ink:#eaf0ff;
+    --muted:#9db0d6;
+    --accent:#5aa7ff;
+    --accent2:#ff7ab6;
+    --female:#ff6fae;
+    --male:#5aa7ff;
+    --good:#38d39f;
+    --warn:#ffcf5c;
+    --line:rgba(255,255,255,.10);
+    --shadow:0 20px 60px rgba(0,0,0,.45);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans TC",system-ui,sans-serif;
+    background:radial-gradient(1200px 700px at 80% -10%,#1b294d 0%,var(--bg) 55%),var(--bg);
+    color:var(--ink);
+    overflow:hidden;
+  }
+  .deck{position:relative;width:100vw;height:100vh}
+  .slide{
+    position:absolute;inset:0;
+    display:none;
+    padding:clamp(28px,4.5vw,70px) clamp(34px,6vw,110px);
+    flex-direction:column;
+    animation:fade .5s ease;
+    overflow:auto;
+  }
+  .slide.active{display:flex}
+  @keyframes fade{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .kicker{
+    font-size:clamp(.72rem,1vw,.9rem);
+    letter-spacing:.28em;text-transform:uppercase;
+    color:var(--accent);font-weight:700;margin-bottom:.6rem;
+  }
+  h1{font-size:clamp(1.9rem,4.6vw,3.5rem);line-height:1.06;font-weight:800;letter-spacing:-.02em}
+  h2{font-size:clamp(1.5rem,3vw,2.4rem);line-height:1.12;font-weight:800;margin-bottom:.2rem}
+  h3{font-size:clamp(1.05rem,1.7vw,1.35rem);font-weight:700;color:#dfe8ff}
+  p,li{font-size:clamp(.95rem,1.28vw,1.15rem);line-height:1.55;color:var(--ink)}
+  .muted{color:var(--muted)}
+  .accent{color:var(--accent)}
+  .pink{color:var(--accent2)}
+  .good{color:var(--good)}
+  b,strong{color:#fff}
+
+  .title-wrap{margin:auto 0}
+  .authors{margin-top:1.4rem;color:var(--muted);font-size:clamp(.9rem,1.2vw,1.1rem)}
+  .venue{margin-top:.5rem;color:var(--accent);font-weight:600;letter-spacing:.04em}
+  .pill{
+    display:inline-flex;align-items:center;gap:.5rem;
+    background:var(--card);border:1px solid var(--line);
+    padding:.4rem .85rem;border-radius:999px;font-size:.85rem;color:var(--muted);
+  }
+  .pill .dot{width:.55rem;height:.55rem;border-radius:50%}
+
+  .grid{display:grid;gap:clamp(14px,1.6vw,22px);margin-top:1.2rem}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:900px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  .card{
+    background:linear-gradient(180deg,var(--card),#121a33);
+    border:1px solid var(--line);border-radius:18px;
+    padding:clamp(16px,1.8vw,26px);box-shadow:var(--shadow);
+  }
+  .card h3{margin-bottom:.5rem;display:flex;align-items:center;gap:.55rem}
+  .card p,.card li{color:#cdd8f2;font-size:clamp(.86rem,1.12vw,1.02rem)}
+  .num{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:1.9rem;height:1.9rem;border-radius:9px;font-weight:800;
+    background:rgba(90,167,255,.16);color:var(--accent);border:1px solid rgba(90,167,255,.35);
+    font-size:1rem;flex:none;
+  }
+  ul.clean{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-top:.5rem}
+  ul.clean li{position:relative;padding-left:1.35rem}
+  ul.clean li::before{content:"▸";position:absolute;left:0;color:var(--accent);font-weight:700}
+
+  .rq{
+    border-left:4px solid var(--accent);
+    background:linear-gradient(90deg,rgba(90,167,255,.10),transparent 70%);
+  }
+  .rq.rq2{border-color:var(--accent2);background:linear-gradient(90deg,rgba(255,122,182,.10),transparent 70%)}
+  .rq.rq3{border-color:var(--good);background:linear-gradient(90deg,rgba(56,211,159,.10),transparent 70%)}
+  .rq.rq4{border-color:var(--warn);background:linear-gradient(90deg,rgba(255,207,92,.10),transparent 70%)}
+  .tag{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+
+  .flow{display:flex;align-items:stretch;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
+  .flow .box{flex:1;min-width:150px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .flow .arrow{display:flex;align-items:center;color:var(--accent);font-size:1.6rem;font-weight:700}
+
+  .kv{display:flex;gap:.6rem;align-items:baseline;margin:.35rem 0}
+  .kv .k{font-weight:800;color:var(--accent);min-width:3.2rem}
+  .lead{font-size:clamp(1.05rem,1.5vw,1.35rem);color:#dbe6ff;max-width:60ch}
+
+  .footer{
+    position:absolute;left:0;right:0;bottom:0;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:.7rem clamp(34px,6vw,110px);
+    font-size:.78rem;color:var(--muted);border-top:1px solid var(--line);
+    background:rgba(6,10,22,.4);backdrop-filter:blur(6px);
+  }
+  .nav{display:flex;gap:.4rem;align-items:center}
+  .nav button{
+    background:var(--card);color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:.3rem .6rem;cursor:pointer;font-size:.85rem;
+  }
+  .nav button:hover{border-color:var(--accent)}
+  .progress{position:absolute;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .3s}
+
+  .badge{display:inline-block;background:rgba(56,211,159,.14);color:var(--good);border:1px solid rgba(56,211,159,.35);border-radius:6px;padding:.12rem .5rem;font-size:.72rem;font-weight:700}
+  .badge.b2{background:rgba(255,122,182,.14);color:var(--accent2);border-color:rgba(255,122,182,.35)}
+  .badge.b3{background:rgba(255,207,92,.14);color:var(--warn);border-color:rgba(255,207,92,.35)}
+
+  table{width:100%;border-collapse:collapse;margin-top:1rem;font-size:clamp(.8rem,1.05vw,.98rem)}
+  th,td{text-align:left;padding:.6rem .7rem;border-bottom:1px solid var(--line)}
+  th{color:var(--accent);font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}
+  td .m{color:var(--muted)}
+  .center{margin:auto;text-align:center;max-width:70ch}
+  .hint{position:absolute;bottom:3.2rem;right:clamp(34px,6vw,110px);font-size:.72rem;color:var(--muted);opacity:.7}
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <!-- 1 · TITLE -->
+  <section class="slide active">
+    <div class="title-wrap">
+      <div class="kicker">Follow-up to “The Binding Effect” · Interspeech line of work</div>
+      <h1>Un-binding Gender:<br/><span class="accent">Debiasing the Text-Encoder Priors</span> of Instruction TTS</h1>
+      <p class="lead" style="margin-top:1.2rem">
+        From <b>diagnosing</b> compositional gender bias → to <b>mitigating</b> it at its source,
+        with a method that measures on <span class="pink">male ↔ female</span> yet <b>transfers to any social axis</b>.
+      </p>
+      <div class="authors">Kuan-Yu Chen Inventec AI Research</div>
+      <div class="venue">Research-Question Framing Deck</div>
+      <div style="margin-top:1.4rem;display:flex;gap:.6rem;flex-wrap:wrap">
+        <span class="pill"><span class="dot" style="background:var(--male)"></span>Prior work: bias <b>&nbsp;diagnosed</b></span>
+        <span class="pill"><span class="dot" style="background:var(--good)"></span>This work: bias <b>&nbsp;removed</b></span>
+        <span class="pill"><span class="dot" style="background:var(--accent2)"></span>Axis-agnostic by design</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · RECAP -->
+  <section class="slide">
+    <div class="kicker">Where we left off</div>
+    <h2>What “The Binding Effect” established</h2>
+    <p class="muted">Univariate bias tests miss the real risk — bias emerges from <b>compositions</b> of social cues.</p>
+    <div class="grid g3">
+      <div class="card">
+        <h3><span class="num">1</span>Compositional bias is real</h3>
+        <p>Prompts = <b>Social Status × Career × Persona</b>. Cues interact non-additively; the interaction term <b>I</b> (log-odds deviation) exposes bias invisible to single-word probes.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">2</span>Three failure modes</h3>
+        <ul class="clean">
+          <li><b>Additive smoothness</b> — VoxInstruct</li>
+          <li><b>Asymmetric veto power</b> — PromptTTS++ (male cues override)</li>
+          <li><b>Prior saturation</b> — Parler family (P≈0.99 locked female)</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3><span class="num">3</span>Origin traced</h3>
+        <p>Bias correlates with <b>semantic priors of pre-trained text encoders</b> (mT5 / BERT / Flan-T5, Cohen’s <i>d</i>) <b>more than</b> with acoustic training data alone.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.1rem;border-color:rgba(255,207,92,.4)">
+      <p><span class="badge b3">KEY UNFINISHED CLAIM</span> &nbsp; “Generic <b>diversity prompting is insufficient</b> to override entrenched patterns.” The paper diagnoses the disease and points at the organ — <b>but stops before the cure.</b></p>
+    </div>
+  </section>
+
+  <!-- 3 · THE GAP -->
+  <section class="slide">
+    <div class="kicker">The opening</div>
+    <h2>The gap this paper fills</h2>
+    <div class="grid g2" style="margin-top:1.4rem">
+      <div class="card">
+        <h3 class="pink">What we know</h3>
+        <ul class="clean">
+          <li>Bias is <b>compositional</b>, not univariate.</li>
+          <li>It is <b>inherited from the text encoder</b>, downstream of the acoustic model.</li>
+          <li>Prompt-level fixes (“speak diversely”) <b>fail</b>.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="good">What is missing</h3>
+        <ul class="clean">
+          <li>A <b>mitigation</b> method that acts <b>at the encoder</b>, where bias is born.</li>
+          <li>Proof it neutralizes <b>compositional</b> bias, not just word-level bias.</li>
+          <li>Evidence it <b>does not break</b> explicit instruction-following (“use a male voice”).</li>
+          <li>Evidence it <b>generalizes beyond gender</b>.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:1.4rem">
+      <b>Thesis:</b> If bias lives in the encoder’s representation, then a
+      <span class="accent">surgical, low-distortion edit of that representation</span>
+      should erase implicit gender leakage while preserving explicit control —
+      and the recipe should be <span class="pink">axis-agnostic</span>.
+    </p>
+  </section>
+
+  <!-- 4 · WHY ENCODER -->
+  <section class="slide">
+    <div class="kicker">Locating the target</div>
+    <h2>Attack the pipeline where bias is created</h2>
+    <div class="flow">
+      <div class="box"><h3>Instruction <span class="muted">x</span></h3><p class="muted">“A high-status, reckless nurse”</p></div>
+      <div class="arrow">→</div>
+      <div class="box" style="border-color:var(--accent);box-shadow:0 0 0 2px rgba(90,167,255,.25)">
+        <h3 class="accent">Text Encoder</h3><p class="muted">mT5 / BERT / Flan-T5 — <b>bias origin</b></p></div>
+      <div class="arrow">→</div>
+      <div class="box"><h3>Acoustic Backbone</h3><p class="muted">AR / diffusion / AudioLM</p></div>
+      <div class="arrow">→</div>
+      <div class="box"><h3>Speech <span class="muted">y</span></h3><p class="muted">gendered F0 / timbre</p></div>
+    </div>
+    <div class="grid g2" style="margin-top:1.4rem">
+      <div class="card">
+        <h3>Why intervene here, not at the prompt</h3>
+        <p>Prompt engineering fights a battle the encoder has already lost. Editing the <b>representation</b> removes the spurious gender direction <i>before</i> it conditions acoustics.</p>
+      </div>
+      <div class="card">
+        <h3>Why intervene here, not at the backbone</h3>
+        <p>One encoder feeds many ITTS systems. A <b>backbone-agnostic encoder fix</b> transfers across VoxInstruct, PromptTTS++, and Parler with <b>no acoustic retraining</b>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · LITERATURE -->
+  <section class="slide">
+    <div class="kicker">Standing on four shoulders</div>
+    <h2>Debiasing toolkit → mapped to ITTS encoders</h2>
+    <div class="grid g4">
+      <div class="card">
+        <span class="tag">Closed-form erasure</span>
+        <h3>LEACE</h3>
+        <p>Provably removes a linear concept with <b>minimal MSE distortion</b>. Zero training. → neutralize the <b>gender direction</b> in embeddings while keeping semantics.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Layer localization</span>
+        <h3>Bias-Aware PEFT</h3>
+        <p>Finds the <b>single layer</b> where bias spikes; edits &lt;1% of params with a <b>Bias-Balance loss</b>. → surgical mid-encoder intervention.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Persistence</span>
+        <h3>ProSocialTuning</h3>
+        <p>Causal-Mediation finds biased <b>attention heads</b>; regularization stops bias from being <b>re-learned</b>. → guard against fairness forgetting.</p>
+      </div>
+      <div class="card">
+        <span class="tag">Model-agnostic</span>
+        <h3>LIBRA</h3>
+        <p>Post-hoc, backbone-blind editing of <b>bi-directional</b> bias; <b>synthetic paired data</b> (BCS). → contrastive neutral-vs-biased instruction pairs.</p>
+      </div>
+    </div>
+    <p class="muted" style="margin-top:1.1rem">Each method answers a different sub-question of our central goal — together they form the proposed framework (next).</p>
+  </section>
+
+  <!-- 6 · CENTRAL GOAL -->
+  <section class="slide">
+    <div class="center" style="margin:auto">
+      <div class="kicker" style="text-align:center">Central research goal</div>
+      <h1 style="font-size:clamp(1.8rem,4vw,3rem)">Can we erase <span class="pink">implicit</span> gender bias<br/>from ITTS <span class="accent">text-encoder representations</span><br/>without sacrificing <span class="good">explicit</span> controllability —<br/>using a recipe that <span class="warn" style="color:var(--warn)">generalizes to any social axis</span>?</h1>
+      <p class="lead" style="margin:1.6rem auto 0">Measured on the male ↔ female axis for tractability, but formulated so <b>Status, Career, Persona, dialect, age…</b> plug into the same pipeline.</p>
+    </div>
+  </section>
+
+  <!-- 7 · RESEARCH QUESTIONS -->
+  <section class="slide">
+    <div class="kicker">The questions</div>
+    <h2>Four research questions</h2>
+    <div class="grid g2" style="margin-top:.9rem">
+      <div class="card rq">
+        <span class="tag">RQ1 · Erase &amp; Preserve</span>
+        <h3 class="accent">Can we remove the gender direction without breaking explicit control?</h3>
+        <p>Does a low-distortion encoder edit (LEACE / surgical PEFT) drive <b>implicit</b> P(x)→0.5 for neutral prompts while keeping <b>explicit</b> “male/female voice” commands intact?</p>
+      </div>
+      <div class="card rq rq2">
+        <span class="tag">RQ2 · Compositional, not just univariate</span>
+        <h3 class="pink">Does it neutralize the Binding Effect?</h3>
+        <p>Does encoder debiasing shrink the interaction term <b>I</b> — killing <b>asymmetric veto</b> and <b>prior saturation</b> — where diversity prompting failed?</p>
+      </div>
+      <div class="card rq rq3">
+        <span class="tag">RQ3 · Transfer</span>
+        <h3 class="good">Is the recipe axis- and model-agnostic?</h3>
+        <p>Does a method tuned on gender transfer to <b>Status / Career / Persona</b>, and across <b>mT5 / BERT / Flan-T5</b> encoders and their ITTS backbones?</p>
+      </div>
+      <div class="card rq rq4">
+        <span class="tag">RQ4 · Durability</span>
+        <h3 style="color:var(--warn)">Does fairness survive the acoustic stage?</h3>
+        <p>Does the debiased encoder <b>stay</b> debiased once wired into generation (no fairness “forgetting”), vs. re-emerging bias?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8 · FRAMEWORK -->
+  <section class="slide">
+    <div class="kicker">Proposed framework</div>
+    <h2>How each RQ is answered</h2>
+    <table>
+      <thead>
+        <tr><th>RQ</th><th>Mechanism</th><th>Borrowed from</th><th>Output</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge">RQ1</span></td>
+          <td>Locate bias-peak layer → closed-form linear erasure of the gender subspace + Bias-Balance regularizer on &lt;1% params</td>
+          <td>LEACE · Bias-Aware PEFT</td>
+          <td class="m">Neutral-prompt P(x)→0.5; explicit-prompt fidelity preserved</td>
+        </tr>
+        <tr>
+          <td><span class="badge b2">RQ2</span></td>
+          <td>Re-run the compositional Status×Career×Persona test set; recompute interaction term <b>I</b> pre/post</td>
+          <td>The Binding Effect (own metric)</td>
+          <td class="m">|I| collapse; veto &amp; saturation removed</td>
+        </tr>
+        <tr>
+          <td><span class="badge">RQ3</span></td>
+          <td>Swap the “gender” concept for any axis; apply same erasure; test on 3 encoders / 3 backbones</td>
+          <td>LEACE (concept-general) · LIBRA (model-agnostic)</td>
+          <td class="m">Cross-axis, cross-model bias drop</td>
+        </tr>
+        <tr>
+          <td><span class="badge b3">RQ4</span></td>
+          <td>Causal-mediation audit of debiased heads + generalization-guided anchoring through generation</td>
+          <td>ProSocialTuning</td>
+          <td class="m">No fairness relapse downstream</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="muted" style="margin-top:1rem">Optional data lever (LIBRA·BCS): synthesize <b>paired neutral↔biased</b> instructions as contrastive probes / erasure fitting data.</p>
+  </section>
+
+  <!-- 9 · EVALUATION -->
+  <section class="slide">
+    <div class="kicker">Evaluation plan</div>
+    <h2>We already own the measuring stick</h2>
+    <div class="grid g3">
+      <div class="card">
+        <h3 class="accent">Fairness</h3>
+        <ul class="clean">
+          <li><b>P(x)</b> — female-realization prob (wav2vec2 classifier) → target 0.5 on neutral</li>
+          <li><b>Interaction I</b> — log-odds deviation on the compositional set</li>
+          <li><b>Cohen’s d / Δ</b> — encoder-level semantic bias score</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="good">Utility (do-no-harm)</h3>
+        <ul class="clean">
+          <li>Explicit gender-command <b>compliance</b> retained</li>
+          <li>Style / prosody controllability (emotion, speed…)</li>
+          <li>Intelligibility (ASR WER) &amp; naturalness</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 class="pink">Generalization</h3>
+        <ul class="clean">
+          <li>Held-out axes: Status, Career, Persona</li>
+          <li>Held-out encoders: mT5 · BERT · Flan-T5</li>
+          <li>Held-out backbones: Vox · PromptTTS++ · Parler</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card" style="margin-top:1.1rem;border-color:rgba(90,167,255,.4)">
+      <p><span class="badge">CONTINUITY</span> &nbsp; Same 6,900 univariate + 6,400 compositional utterances, same classifier, same <b>I</b> metric as the Binding Effect — so <b>before/after is directly comparable</b>.</p>
+    </div>
+  </section>
+
+  <!-- 10 · GENERALIZATION -->
+  <section class="slide">
+    <div class="kicker">Why it matters beyond gender</div>
+    <h2>Gender is the probe; the method is the point</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Binary today, spectrum-ready tomorrow</h3>
+        <p>We operationalize gender as binary for <b>tractable, macroscopic quantification</b> — exactly as the prior paper argued. The erasure machinery is defined over an <b>arbitrary concept subspace</b>, so the same closed form removes a Status, Career, or dialect direction.</p>
+      </div>
+      <div class="card">
+        <h3>One recipe, many axes</h3>
+        <div class="kv"><span class="k">Input</span><span>any protected attribute → anchor word sets</span></div>
+        <div class="kv"><span class="k">Fit</span><span>estimate concept subspace in encoder space</span></div>
+        <div class="kv"><span class="k">Erase</span><span>closed-form projection, minimal distortion</span></div>
+        <div class="kv"><span class="k">Verify</span><span>P(x), I, d on that axis’ test set</span></div>
+      </div>
+    </div>
+    <p class="lead" style="margin-top:1.3rem">Deliverable: an <span class="accent">axis-agnostic debiasing module</span> for ITTS text encoders — demonstrated on gender, portable to any social dimension.</p>
+  </section>
+
+  <!-- 11 · CONTRIBUTIONS -->
+  <section class="slide">
+    <div class="kicker">Anticipated contributions</div>
+    <h2>What this paper will claim</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3><span class="num">1</span>First encoder-level debiasing for ITTS</h3>
+        <p>Moves the field from <b>diagnosing</b> ITTS gender bias to <b>removing</b> it at the representational source.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">2</span>Beats the compositional test</h3>
+        <p>Neutralizes the <b>Binding Effect</b> (veto, saturation) that prompt-based diversity provably could not.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">3</span>Utility-preserving</h3>
+        <p>Erases <b>implicit</b> bias while keeping <b>explicit</b> gender/style control and intelligibility.</p>
+      </div>
+      <div class="card">
+        <h3><span class="num">4</span>Axis- &amp; model-agnostic recipe</h3>
+        <p>A closed-form, backbone-blind module generalizing beyond gender and across encoders.</p>
+      </div>
+    </div>
+    <p class="center lead" style="margin-top:1.5rem">“Equitable ITTS necessitates disentangling textual priors.” <span class="muted">— our own conclusion.</span> <b class="good">This paper does the disentangling.</b></p>
+  </section>
+
+  <!-- 12 · CLOSE -->
+  <section class="slide">
+    <div class="center" style="margin:auto">
+      <div class="kicker" style="text-align:center">Open questions for discussion</div>
+      <h1 style="font-size:clamp(1.7rem,3.6vw,2.8rem)">Which RQ is the spine?</h1>
+      <div class="grid g2" style="text-align:left;margin-top:1.4rem">
+        <div class="card"><p>• Lead with <b>RQ2</b> (beat the Binding Effect) for a tight narrative arc with the prior paper?</p></div>
+        <div class="card"><p>• Or lead with <b>RQ1</b> (erase-vs-preserve trade-off) as the core scientific tension?</p></div>
+        <div class="card"><p>• Is <b>RQ4</b> (durability) a full contribution or an ablation?</p></div>
+        <div class="card"><p>• Scope: one flagship method (LEACE-based) or a <b>comparative study</b> of all four?</p></div>
+      </div>
+      <p class="lead" style="margin:1.4rem auto 0">Next step → lock scope, pick the flagship encoder + backbone, and freeze the before/after protocol.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="progress" id="progress"></div>
+<div class="footer">
+  <div>Un-binding Gender · Debiasing ITTS Text-Encoder Priors</div>
+  <div class="nav">
+    <button onclick="go(-1)">◀ Prev</button>
+    <span id="counter">1 / 12</span>
+    <button onclick="go(1)">Next ▶</button>
+  </div>
+</div>
+<div class="hint">← → / Space to navigate · F for fullscreen</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  let i=0;
+  function render(){
+    slides.forEach((s,n)=>s.classList.toggle('active',n===i));
+    document.getElementById('counter').textContent=(i+1)+' / '+slides.length;
+    document.getElementById('progress').style.width=((i+1)/slides.length*100)+'%';
+  }
+  function go(d){i=Math.min(slides.length-1,Math.max(0,i+d));render();}
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){go(1);e.preventDefault();}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){go(-1);e.preventDefault();}
+    else if(e.key==='Home'){i=0;render();}
+    else if(e.key==='End'){i=slides.length-1;render();}
+    else if(e.key.toLowerCase()==='f'){
+      if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+  let sx=0;
+  document.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});
+  document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)go(dx<0?1:-1);},{passive:true});
+  render();
+</script>
+</body>
+</html>

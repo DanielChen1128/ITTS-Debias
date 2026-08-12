@@ -1,0 +1,1471 @@
+{
+  "per_method": {
+    "original": {
+      "n": 28,
+      "neutral_p_female": 0.6487774510391504,
+      "stereotyped_shift_mean": -0.025217891598865966,
+      "grounded_stereotype_acc": 0.5,
+      "dev_abs_shift_mean": 0.4072640056636496,
+      "anchor_control_acc": 0.75,
+      "utmos_mean": 3.645244002342224,
+      "wer_mean": 0.2976190476190476,
+      "child_frac": 0.0
+    },
+    "random": {
+      "n": 28,
+      "neutral_p_female": 0.45297698489259086,
+      "stereotyped_shift_mean": -0.056075903582482024,
+      "grounded_stereotype_acc": 0.5,
+      "dev_abs_shift_mean": 0.44747904234631114,
+      "anchor_control_acc": 1.0,
+      "utmos_mean": 3.6863995790481567,
+      "wer_mean": 0.38095238095238093,
+      "child_frac": 0.0
+    },
+    "gender_direction": {
+      "n": 28,
+      "neutral_p_female": 0.5719014552270831,
+      "stereotyped_shift_mean": 0.15939355933491223,
+      "grounded_stereotype_acc": 0.6666666666666666,
+      "dev_abs_shift_mean": 0.41606316675230376,
+      "anchor_control_acc": 1.0,
+      "utmos_mean": 3.6308954996722087,
+      "wer_mean": 0.3928571428571428,
+      "child_frac": 0.0
+    },
+    "leace_bypass": {
+      "n": 28,
+      "neutral_p_female": 0.6206497478543539,
+      "stereotyped_shift_mean": -0.17480012285879068,
+      "grounded_stereotype_acc": 0.16666666666666666,
+      "dev_abs_shift_mean": 0.3468326605687219,
+      "anchor_control_acc": 0.75,
+      "utmos_mean": 3.6833943724632263,
+      "wer_mean": 0.4345238095238095,
+      "child_frac": 0.0
+    },
+    "leace_nobypass": {
+      "n": 28,
+      "neutral_p_female": 0.7650482452985684,
+      "stereotyped_shift_mean": 0.173712410187599,
+      "grounded_stereotype_acc": 0.6666666666666666,
+      "dev_abs_shift_mean": 0.35186299851975567,
+      "anchor_control_acc": 1.0,
+      "utmos_mean": 3.7014836924416676,
+      "wer_mean": 0.36904761904761907,
+      "child_frac": 0.0
+    }
+  },
+  "per_item": {
+    "original": [
+      {
+        "id": "0001",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9818973791440881,
+        "child": 0.0008025611750781536,
+        "utmos": 4.014152526855469,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0002",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9859706664916831,
+        "child": 0.012485207058489323,
+        "utmos": 3.0187153816223145,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0003",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.3310657518896662,
+        "child": 0.0056172520853579044,
+        "utmos": 4.155023574829102,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0004",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9496861407132428,
+        "child": 0.00019484429503791034,
+        "utmos": 3.572511672973633,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0005",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.8061526120839946,
+        "child": 0.0005028347368352115,
+        "utmos": 3.3303513526916504,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0006",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.993605074483189,
+        "child": 0.0012840046547353268,
+        "utmos": 3.8844356536865234,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0007",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9948587380044663,
+        "child": 3.343162461533211e-05,
+        "utmos": 3.5636284351348877,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0008",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9832089289266599,
+        "child": 0.002822963986545801,
+        "utmos": 3.0768625736236572,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0009",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.21314688842041254,
+        "child": 0.01236344687640667,
+        "utmos": 3.8884854316711426,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0010",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9464812125834426,
+        "child": 0.0040856609120965,
+        "utmos": 4.006376266479492,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0011",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.020391920821813486,
+        "child": 0.0012840493582189083,
+        "utmos": 3.7069849967956543,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0012",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.03431628351503831,
+        "child": 0.00010409543028799817,
+        "utmos": 3.079838514328003,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0013",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9119681840376829,
+        "child": 0.000171000647242181,
+        "utmos": 3.2877049446105957,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0014",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9951302675013319,
+        "child": 0.0001309864892391488,
+        "utmos": 3.5502688884735107,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0015",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9948471400747716,
+        "child": 0.0005768106202594936,
+        "utmos": 3.240161895751953,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0016",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9408586273558414,
+        "child": 0.3030339479446411,
+        "utmos": 3.306447982788086,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0017",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9863917090028917,
+        "child": 0.0003889721119776368,
+        "utmos": 4.038636207580566,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0018",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.003611842609427073,
+        "child": 0.0014822882367298007,
+        "utmos": 3.9758148193359375,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0019",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9979098356924959,
+        "child": 6.427019252441823e-05,
+        "utmos": 3.59684419631958,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0020",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.161879970580826,
+        "child": 0.00010509630374144763,
+        "utmos": 2.4652369022369385,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0021",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.962049754421803,
+        "child": 0.00046567563549615443,
+        "utmos": 3.971158981323242,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0022",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9823645281473821,
+        "child": 0.0035170032642781734,
+        "utmos": 3.9292941093444824,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0023",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.7599333123732609,
+        "child": 0.002469283062964678,
+        "utmos": 3.930468797683716,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0024",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.028527305019134617,
+        "child": 0.0009490100783295929,
+        "utmos": 3.991347312927246,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0025",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.988518454341555,
+        "child": 0.0021155644208192825,
+        "utmos": 4.025290489196777,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0026",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.9247668021824232,
+        "child": 0.0004994862829335034,
+        "utmos": 3.6109509468078613,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0027",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.0010845202389818077,
+        "child": 2.897177910199389e-05,
+        "utmos": 3.9099535942077637,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0028",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.936409448119369,
+        "child": 0.0003289208689238876,
+        "utmos": 3.9398856163024902,
+        "wer": 0.2857142857142857
+      }
+    ],
+    "random": [
+      {
+        "id": "0001",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9069577518968865,
+        "child": 0.0017186524346470833,
+        "utmos": 4.223638534545898,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0002",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.8555816251894043,
+        "child": 0.0018946359632536769,
+        "utmos": 3.0815162658691406,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0003",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.48926315668970866,
+        "child": 0.0003211201401427388,
+        "utmos": 3.7710742950439453,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0004",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9660755206126734,
+        "child": 0.0002835915656760335,
+        "utmos": 3.266026020050049,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0005",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.9796323598151774,
+        "child": 0.002712456276640296,
+        "utmos": 4.181761741638184,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0006",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.9958363032934217,
+        "child": 0.0013554035685956478,
+        "utmos": 3.8080990314483643,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0007",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9393251190266036,
+        "child": 0.0009846074972301722,
+        "utmos": 3.331071138381958,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0008",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.997929732959601,
+        "child": 0.00014003647083882242,
+        "utmos": 3.6513965129852295,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0009",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9925839609755635,
+        "child": 0.0005901216645725071,
+        "utmos": 3.349621534347534,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0010",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9931033080258327,
+        "child": 0.00017802130605559796,
+        "utmos": 3.237403392791748,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0011",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.976905975848912,
+        "child": 0.0015433304943144321,
+        "utmos": 4.034328937530518,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0012",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.815366696763203,
+        "child": 0.003190619871020317,
+        "utmos": 3.10455322265625,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0013",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.8166964883681935,
+        "child": 0.001299360184930265,
+        "utmos": 4.049774169921875,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0014",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.03905542096949324,
+        "child": 0.023510942235589027,
+        "utmos": 3.855833053588867,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0015",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.7689857591546481,
+        "child": 0.015571977011859417,
+        "utmos": 4.0084309577941895,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0016",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9365116538910675,
+        "child": 0.00029072861070744693,
+        "utmos": 3.9979066848754883,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0017",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.898467163064782,
+        "child": 0.005532869137823582,
+        "utmos": 1.7389647960662842,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0018",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.802697919972728,
+        "child": 0.01474884431809187,
+        "utmos": 3.088205337524414,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0019",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.06292945728822832,
+        "child": 0.0026733519043773413,
+        "utmos": 3.8781545162200928,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0020",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.0002826636980885946,
+        "child": 8.278981840703636e-05,
+        "utmos": 3.813481330871582,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0021",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9861089574400781,
+        "child": 0.00013232685159891844,
+        "utmos": 3.706378936767578,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0022",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.6746335481202231,
+        "child": 0.002444606274366379,
+        "utmos": 3.594658613204956,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0023",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.001475092181413092,
+        "child": 0.0004977415665052831,
+        "utmos": 4.058649063110352,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0024",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9924321906275141,
+        "child": 0.0022041634656488895,
+        "utmos": 4.1632795333862305,
+        "wer": 0.0
+      },
+      {
+        "id": "0025",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.9639952596136578,
+        "child": 0.0008297250606119633,
+        "utmos": 4.136551856994629,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0026",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.9953864446235959,
+        "child": 0.00042268208926543593,
+        "utmos": 3.758673906326294,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0027",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.002967178890499714,
+        "child": 4.6863104216754436e-05,
+        "utmos": 4.265635013580322,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0028",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.015197082890697844,
+        "child": 0.004336036276072264,
+        "utmos": 4.064119815826416,
+        "wer": 0.42857142857142855
+      }
+    ],
+    "gender_direction": [
+      {
+        "id": "0001",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.16086851737569702,
+        "child": 0.00027684500673785806,
+        "utmos": 3.3042492866516113,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0002",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9981317245750211,
+        "child": 6.992716953391209e-05,
+        "utmos": 3.601077079772949,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0003",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.17975907425977936,
+        "child": 0.0006737355142831802,
+        "utmos": 3.6756432056427,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0004",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.6840758663663842,
+        "child": 0.00036494110827334225,
+        "utmos": 3.5176517963409424,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0005",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.8827608528073458,
+        "child": 0.003879279363900423,
+        "utmos": 3.5465052127838135,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0006",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.9526327753248428,
+        "child": 0.0015654609305784106,
+        "utmos": 3.658325672149658,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0007",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.8788674289375232,
+        "child": 0.0006593764410354197,
+        "utmos": 2.729641914367676,
+        "wer": 0.7142857142857143
+      },
+      {
+        "id": "0008",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.02306381951004914,
+        "child": 0.00026029572472907603,
+        "utmos": 3.296741008758545,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0009",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9882478148588597,
+        "child": 4.165063728578389e-05,
+        "utmos": 3.775298595428467,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0010",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.011008517995331377,
+        "child": 0.00012355502985883504,
+        "utmos": 3.3254714012145996,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0011",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.926496195935495,
+        "child": 0.001388436765410006,
+        "utmos": 3.8504879474639893,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0012",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9952479625630862,
+        "child": 0.00271134776994586,
+        "utmos": 3.9239706993103027,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0013",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9907622882853288,
+        "child": 0.00023019059153739363,
+        "utmos": 3.995370864868164,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0014",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9698926538341542,
+        "child": 0.00019523843366187066,
+        "utmos": 3.6530933380126953,
+        "wer": 0.0
+      },
+      {
+        "id": "0015",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9847882953626709,
+        "child": 0.001185131724923849,
+        "utmos": 3.7495718002319336,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0016",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.7577583053733107,
+        "child": 0.0018824246944859624,
+        "utmos": 2.958056688308716,
+        "wer": 0.0
+      },
+      {
+        "id": "0017",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.99200687660386,
+        "child": 6.736662908224389e-05,
+        "utmos": 3.9337925910949707,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0018",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.025828751858764022,
+        "child": 0.010911536403000355,
+        "utmos": 3.5008327960968018,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0019",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.007903102237858105,
+        "child": 0.0001187946618301794,
+        "utmos": 4.14992618560791,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0020",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9875456147367314,
+        "child": 0.0006588864489458501,
+        "utmos": 4.156610488891602,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0021",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9970549464464803,
+        "child": 7.803935295669362e-05,
+        "utmos": 3.7952775955200195,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0022",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9978967750641822,
+        "child": 0.0012289496371522546,
+        "utmos": 3.766622543334961,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0023",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.0004957764333074905,
+        "child": 0.01609659008681774,
+        "utmos": 4.02301025390625,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0024",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.4405125164439396,
+        "child": 0.0018885813187807798,
+        "utmos": 1.781685471534729,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0025",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.9963601607828627,
+        "child": 0.0001091498852474615,
+        "utmos": 4.169239044189453,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0026",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.9511790572543649,
+        "child": 0.0034478683955967426,
+        "utmos": 4.095784664154053,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0027",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.004844204977264123,
+        "child": 0.018352031707763672,
+        "utmos": 4.161888122558594,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0028",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.002492589107248545,
+        "child": 0.0004441950877662748,
+        "utmos": 3.5692477226257324,
+        "wer": 0.2857142857142857
+      }
+    ],
+    "leace_bypass": [
+      {
+        "id": "0001",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.855812252988683,
+        "child": 0.0032401082571595907,
+        "utmos": 3.3450944423675537,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0002",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.8365779432545256,
+        "child": 0.0011707628145813942,
+        "utmos": 3.687326192855835,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0003",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.994474774118153,
+        "child": 4.3341282434994355e-05,
+        "utmos": 2.634979724884033,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0004",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9916265140154461,
+        "child": 0.00011753200669772923,
+        "utmos": 3.4430923461914062,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0005",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.390513716602028,
+        "child": 0.10913196951150894,
+        "utmos": 3.798476219177246,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0006",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.9978775349133278,
+        "child": 0.00017870818555820733,
+        "utmos": 3.614748477935791,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0007",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9480747560069218,
+        "child": 0.007198754232376814,
+        "utmos": 4.234785079956055,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0008",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9899517584960624,
+        "child": 0.004613259807229042,
+        "utmos": 3.987140417098999,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0009",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9279816413503789,
+        "child": 0.00016572179447393864,
+        "utmos": 4.0985846519470215,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0010",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.2256659882842064,
+        "child": 0.001233214745298028,
+        "utmos": 3.811917543411255,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0011",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9607808421729165,
+        "child": 0.0013523637317121029,
+        "utmos": 3.9014828205108643,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0012",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.006152178743784626,
+        "child": 0.0001427794195478782,
+        "utmos": 3.5759549140930176,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0013",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.8781104719890853,
+        "child": 0.005242779850959778,
+        "utmos": 3.613861083984375,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0014",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9369086940393316,
+        "child": 0.009391001425683498,
+        "utmos": 3.5456130504608154,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0015",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9927868219867627,
+        "child": 4.89401318191085e-05,
+        "utmos": 3.8219504356384277,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0016",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9940518552575085,
+        "child": 0.00016499971388839185,
+        "utmos": 4.106278896331787,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0017",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9843973301743411,
+        "child": 0.0008516787202097476,
+        "utmos": 4.351466178894043,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0018",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.4953355904945312,
+        "child": 0.023481404408812523,
+        "utmos": 3.941194534301758,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0019",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9992361710512332,
+        "child": 3.894603287335485e-05,
+        "utmos": 3.0906851291656494,
+        "wer": 1.4285714285714286
+      },
+      {
+        "id": "0020",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9978025932982411,
+        "child": 7.026018283795565e-05,
+        "utmos": 4.185766220092773,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0021",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9884611898923973,
+        "child": 0.00018551497487351298,
+        "utmos": 3.19309401512146,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0022",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.24687456855613238,
+        "child": 0.01620977558195591,
+        "utmos": 4.0783491134643555,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0023",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.02393461643749232,
+        "child": 0.0005465490976348519,
+        "utmos": 3.3543078899383545,
+        "wer": 0.7142857142857143
+      },
+      {
+        "id": "0024",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.4675893478906271,
+        "child": 0.0022883322089910507,
+        "utmos": 3.711139678955078,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0025",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.9942937004108094,
+        "child": 0.00014814615133218467,
+        "utmos": 3.8473944664001465,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0026",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.9771367633577455,
+        "child": 0.00015519042790401727,
+        "utmos": 3.8771605491638184,
+        "wer": 0.7142857142857143
+      },
+      {
+        "id": "0027",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.00011307317654728197,
+        "child": 0.00011489386088214815,
+        "utmos": 4.200209617614746,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0028",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.7656533389291778,
+        "child": 0.00017064517305698246,
+        "utmos": 2.082988739013672,
+        "wer": 0.5714285714285714
+      }
+    ],
+    "leace_nobypass": [
+      {
+        "id": "0001",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.4578609539396829,
+        "child": 0.0009729668963700533,
+        "utmos": 4.049623489379883,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0002",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9496949348007481,
+        "child": 0.0004251424106769264,
+        "utmos": 3.1478593349456787,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0003",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.9779015423533507,
+        "child": 0.0004054049786645919,
+        "utmos": 4.20545768737793,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0004",
+        "kind": "grounded",
+        "expected_gender": "male",
+        "explicit": false,
+        "p_female": 0.07609600541998539,
+        "child": 0.00479763513430953,
+        "utmos": 4.004032135009766,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0005",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.9820142624109919,
+        "child": 0.0006476709386333823,
+        "utmos": 4.320440292358398,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0006",
+        "kind": "grounded",
+        "expected_gender": "female",
+        "explicit": false,
+        "p_female": 0.9917171446312325,
+        "child": 7.199845276772976e-05,
+        "utmos": 3.938390016555786,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0007",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9871919604304136,
+        "child": 0.00787240732461214,
+        "utmos": 4.272552490234375,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0008",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.006297103492213934,
+        "child": 3.3786487620091066e-05,
+        "utmos": 3.2573485374450684,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0009",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.03747253894356864,
+        "child": 3.680620284285396e-05,
+        "utmos": 3.836409568786621,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0010",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9963248345378952,
+        "child": 0.0030773961916565895,
+        "utmos": 4.199184417724609,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0011",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.006818259442685987,
+        "child": 0.0005295865703374147,
+        "utmos": 3.4511284828186035,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0012",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.0014627748930301123,
+        "child": 0.00019173967302776873,
+        "utmos": 3.1826694011688232,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0013",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9221261067693768,
+        "child": 0.003246085485443473,
+        "utmos": 3.0671751499176025,
+        "wer": 0.8571428571428571
+      },
+      {
+        "id": "0014",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9922287386476649,
+        "child": 0.0013822434702888131,
+        "utmos": 3.6780972480773926,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0015",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9111905886353311,
+        "child": 0.0018898338312283158,
+        "utmos": 3.1331121921539307,
+        "wer": 0.5714285714285714
+      },
+      {
+        "id": "0016",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.7781363667269452,
+        "child": 0.004365450702607632,
+        "utmos": 3.4860923290252686,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0017",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.941286777751973,
+        "child": 0.001493834424763918,
+        "utmos": 3.580831527709961,
+        "wer": 0.7142857142857143
+      },
+      {
+        "id": "0018",
+        "kind": "dev",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.8061142667032403,
+        "child": 0.005762992426753044,
+        "utmos": 2.7773427963256836,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0019",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.0059804519587304825,
+        "child": 0.0007749702199362218,
+        "utmos": 3.7689905166625977,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0020",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.8795156632167604,
+        "child": 0.00041880118078552186,
+        "utmos": 3.1317479610443115,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0021",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9658153610832686,
+        "child": 0.003067595651373267,
+        "utmos": 3.1831674575805664,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0022",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.767130067187394,
+        "child": 0.054933857172727585,
+        "utmos": 3.9306447505950928,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0023",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9736616141658273,
+        "child": 0.022381160408258438,
+        "utmos": 4.108154773712158,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0024",
+        "kind": "neutral",
+        "expected_gender": null,
+        "explicit": false,
+        "p_female": 0.9981863141794297,
+        "child": 0.0006157126626931131,
+        "utmos": 3.836744546890259,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0025",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.963855349135037,
+        "child": 0.00028610971639864147,
+        "utmos": 3.9097506999969482,
+        "wer": 0.2857142857142857
+      },
+      {
+        "id": "0026",
+        "kind": "anchor",
+        "expected_gender": "female",
+        "explicit": true,
+        "p_female": 0.632948305364123,
+        "child": 0.0033200974576175213,
+        "utmos": 4.215763092041016,
+        "wer": 0.42857142857142855
+      },
+      {
+        "id": "0027",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.004214579140603191,
+        "child": 0.001226106658577919,
+        "utmos": 3.931776523590088,
+        "wer": 0.14285714285714285
+      },
+      {
+        "id": "0028",
+        "kind": "anchor",
+        "expected_gender": "male",
+        "explicit": true,
+        "p_female": 0.00036501104587950277,
+        "child": 0.0008341539651155472,
+        "utmos": 4.037055969238281,
+        "wer": 0.5714285714285714
+      }
+    ]
+  }
+}

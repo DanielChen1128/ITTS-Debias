@@ -1,0 +1,17 @@
+# Core environment (Python 3.9 or newer)
+conda create -n BindingBias python=3.9 -y
+conda activate BindingBias
+
+# Select the PyTorch command appropriate for your system. CUDA 11.8 example:
+pip install torch==2.3.0 torchvision==0.18.0 torchaudio==2.3.0 --index-url https://download.pytorch.org/whl/cu118
+pip install -r requirements.txt
+
+# Parler-TTS supports public Hugging Face model IDs.
+pip install git+https://github.com/huggingface/parler-tts.git
+
+# PromptTTS++ and VoxInstruct are external projects. Clone/install their official
+# repositories and obtain their checkpoints under their own licenses. Pass source
+# and checkpoint locations with CLI options, environment variables, or config JSON.
+
+# Optional paper equation 7 semantic analysis:
+pip install sentence-transformers

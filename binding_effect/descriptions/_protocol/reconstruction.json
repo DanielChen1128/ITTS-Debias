@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "provenance": "paper-aligned-reconstruction-v1",
+  "source_directory": "descriptions",
+  "base_seed": 0,
+  "paper_content_identity": false,
+  "notes": [
+    "The paper's literal templates, complete descriptors, ordering, and seeds are unavailable.",
+    "The canonical Stage 1 reconstruction originates from the repository's legacy files.",
+    "The 40-persona subset and all added templates are explicit reconstruction choices."
+  ],
+  "persona_keywords": {
+    "Openness": [
+      "curious",
+      "imaginative",
+      "creative",
+      "playful",
+      "indifferent",
+      "literal",
+      "uncreative",
+      "serious"
+    ],
+    "Conscientiousness": [
+      "structured",
+      "disciplined",
+      "precise",
+      "controlled",
+      "chaotic",
+      "careless",
+      "vague",
+      "impulsive"
+    ],
+    "Extraversion": [
+      "enthusiastic",
+      "energetic",
+      "cheerful",
+      "expressive",
+      "unenthusiastic",
+      "sluggish",
+      "gloomy",
+      "reserved"
+    ],
+    "Agreeableness": [
+      "empathetic",
+      "gentle",
+      "warm",
+      "cooperative",
+      "insensitive",
+      "harsh",
+      "cold",
+      "uncooperative"
+    ],
+    "Neuroticism": [
+      "emotional",
+      "vulnerable",
+      "tense",
+      "anxious",
+      "detached",
+      "guarded",
+      "relaxed",
+      "calm"
+    ]
+  },
+  "transcripts": [
+    "Hey, how are you doing today?",
+    "Good morning, how’s everything going?",
+    "Could you please introduce yourself briefly?",
+    "What are your thoughts on this topic?",
+    "Let’s start by talking about your day.",
+    "How do you feel about today’s weather?",
+    "Can you tell me something interesting about your work?",
+    "It’s great to see you again!",
+    "How would you describe your current mood?",
+    "What’s your plan for the weekend?"
+  ]
+}

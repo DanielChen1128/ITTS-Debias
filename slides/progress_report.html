@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>Encoder Gender-Debiasing for Parler-TTS Mini — 進度報告</title>
+<style>
+  @page { size: A4; margin: 18mm 16mm; }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans CJK TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+    color: #1a1a1a; line-height: 1.55; font-size: 11pt; margin: 0; padding: 0 8px;
+  }
+  h1 { font-size: 21pt; color: #0f3d5c; border-bottom: 3px solid #0f3d5c; padding-bottom: 8px; margin-bottom: 4px; }
+  h2 { font-size: 14pt; color: #0f3d5c; margin-top: 22px; border-left: 5px solid #2b7bb0; padding-left: 10px; }
+  h3 { font-size: 12pt; color: #24506b; margin-top: 16px; }
+  .meta { color: #555; font-size: 10pt; margin-bottom: 6px; }
+  .meta strong { color: #0f3d5c; }
+  .status-banner {
+    background: #e8f5e9; border: 1px solid #66bb6a; border-radius: 6px;
+    padding: 10px 14px; margin: 14px 0; font-size: 10.5pt;
+  }
+  table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 9.8pt; }
+  th, td { border: 1px solid #cfd8dc; padding: 5px 8px; text-align: left; }
+  th { background: #0f3d5c; color: #fff; font-weight: 600; }
+  tr:nth-child(even) td { background: #f5f9fc; }
+  .yes { color: #2e7d32; font-weight: 700; }
+  .no { color: #b71c1c; font-weight: 600; }
+  .main-row td { background: #fff3e0 !important; font-weight: 600; }
+  code { background: #eef2f5; padding: 1px 5px; border-radius: 3px; font-size: 9pt; font-family: "DejaVu Sans Mono", monospace; }
+  .formula { background: #f0f4f8; border-left: 4px solid #2b7bb0; padding: 8px 12px; margin: 10px 0; font-family: "DejaVu Sans Mono", monospace; font-size: 9.5pt; }
+  ul { margin: 6px 0; padding-left: 22px; }
+  li { margin: 3px 0; }
+  .kpi-wrap { display: flex; gap: 10px; margin: 14px 0; flex-wrap: wrap; }
+  .kpi { flex: 1; min-width: 130px; background: #0f3d5c; color: #fff; border-radius: 8px; padding: 12px; text-align: center; }
+  .kpi .num { font-size: 20pt; font-weight: 700; display: block; }
+  .kpi .lbl { font-size: 8.5pt; opacity: .9; }
+  .footnote { color: #666; font-size: 8.5pt; margin-top: 4px; }
+  h2 { page-break-after: avoid; }
+  table { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<h1>Encoder Gender-Debiasing for Parler-TTS Mini</h1>
+<div class="meta"><strong>專案</strong>：ITTS_Debias / binding_effect &nbsp;|&nbsp; <strong>模型</strong>：Parler-TTS Mini v1 &nbsp;|&nbsp; <strong>硬體</strong>：RTX 4090 24GB &nbsp;|&nbsp; <strong>日期</strong>：2026-08-11</div>
+
+<div class="status-banner">
+<strong>狀態：</strong>主實驗（test split，1050 WAV）已完成，H1–H5 全數通過驗證。LEACE 將職業刻板性別偏誤降低 <strong>87%</strong>，同時維持語音品質與 100% 顯式控制。Mixed-effects 統計尚未執行。
+</div>
+
+<div class="kpi-wrap">
+  <div class="kpi"><span class="num">−87%</span><span class="lbl">bias_gap 降幅<br>(0.389 → 0.049)</span></div>
+  <div class="kpi"><span class="num">1050</span><span class="lbl">主實驗 WAV<br>(5 methods × 210)</span></div>
+  <div class="kpi"><span class="num">5/5</span><span class="lbl">假設 H1–H5<br>全數成立</span></div>
+  <div class="kpi"><span class="num">100%</span><span class="lbl">顯式控制準確率<br>(leace_bypass)</span></div>
+</div>
+
+<h2>1. 研究目標</h2>
+<p>在 Parler-TTS Mini 的文字描述 encoder 表徵上，以 <strong>LEACE（Least-squares Concept Erasure）</strong> 抹除性別方向，降低「職業刻板印象洩漏到合成語音性別」的偏誤，同時保留語音品質、語意保真度，以及顯式性別控制（明確要求 male/female 的 prompt 應 bypass 介入）。公平主指標並非要求 <code>P(female)=0.5</code>，而是量測 social cue 相對 neutral baseline 造成的性別影響。</p>
+
+<h2>2. 方法概要</h2>
+<ul>
+  <li><strong>介入 seam</strong>：precompute encoder 最終投影狀態 → 套用 LEACE eraser → 以 <code>encoder_outputs</code> 傳入 <code>generate()</code>，不 patch Parler 內部。</li>
+  <li><strong>LEACE fit 標籤</strong>：一律來自顯式性別 anchor；職業刻板性別只作分析 covariate，從不用於 fit（避免洩漏）。</li>
+  <li><strong>探針</strong>：純 torch <code>LinearProbe</code> + ROC-AUC，不引入 scikit-learn。</li>
+  <li><strong>五組對照</strong>：<code>original</code>（基線）、<code>random</code>（rank-matched 隨機正交，null control）、<code>gender_direction</code>（rank-1 均值差投影）、<code>leace_nobypass</code>（無條件 LEACE）、<code>leace_bypass</code>（主方法：LEACE + 顯式 bypass）。後兩者共用同一 <code>artifacts/leace.pt</code>，僅差 bypass 旗標。</li>
+</ul>
+
+<h2>3. 資料與 split 設計</h2>
+<p>以 descriptor lemma 為單位切分，跨 split lemma 重疊 = 0，0 個 descriptor 含顯式性別詞。Grounded 職業性別先驗共 4M/5F，主實驗跑在 <strong>test split（2M/3F）</strong>，避免 pilot 時「女性職業僅 nanny 單一 lemma」造成檢定力不足。</p>
+<h3>主實驗 prompt set（<code>data/main.json</code>，210 prompts）</h3>
+<table>
+<tr><th>kind</th><th>數量</th><th>說明</th></tr>
+<tr><td>grounded</td><td>125</td><td>女性 75（midwife/receptionist/social worker 各 25）、男性 50（butcher/fisherman 各 25），跨 5 transcripts，無 persona 混淆</td></tr>
+<tr><td>dev</td><td>50</td><td>dev-split implicit descriptors（漂移幅度量測）</td></tr>
+<tr><td>neutral</td><td>15</td><td>無 descriptor 參考基線</td></tr>
+<tr><td>anchor</td><td>20</td><td>顯式 male/female 控制 prompts</td></tr>
+</table>
+<p class="footnote">生成規模：210 prompts × 5 methods = 1050 WAV（約 4.4 小時，RTX 4090）。</p>
+
+<h2>4. 各階段進度</h2>
+<table>
+<tr><th>階段</th><th>內容</th><th>狀態</th></tr>
+<tr><td>0–1</td><td>debias package、anchors/neutral/splits 資料基礎</td><td class="yes">✅ 完成</td></tr>
+<tr><td>2</td><td>Encoder screening（separability / spillover / retention），判定 GO</td><td class="yes">✅ 完成</td></tr>
+<tr><td>3</td><td>LEACE 與對照組 eraser 擬合（皆 rank-1、feat=1024）</td><td class="yes">✅ 完成</td></tr>
+<tr><td>—</td><td>評估模型建置（gender ONNX、UTMOS、whisper-tiny.en），全離線</td><td class="yes">✅ 完成</td></tr>
+<tr><td>4a</td><td>極小 smoke（28 prompts）驗證 pipeline</td><td class="yes">✅ 完成</td></tr>
+<tr><td>4b</td><td>標準 pilot（train split，700 WAV）</td><td class="yes">✅ 完成</td></tr>
+<tr><td>5</td><td><strong>主實驗（test split，1050 WAV）</strong></td><td class="yes">✅ 完成</td></tr>
+<tr><td>6</td><td>Mixed-effects 統計</td><td>⏳ 待執行</td></tr>
+<tr><td>7</td><td>撰稿與復現包</td><td>⏳ 待執行</td></tr>
+</table>
+<p class="footnote">測試：全套 49 tests 通過。</p>
+
+<h2>5. 主實驗結果（test split，n=1050）</h2>
+<h3>5.1 核心指標 — bias_gap</h3>
+<div class="formula">bias_gap = P(female voice | 女性刻板職業) − P(female voice | 男性刻板職業)</div>
+<p class="footnote">不受各方法全域 neutral baseline 漂移影響（女性 n=75、男性 n=50，10000 次 bootstrap）。</p>
+<table>
+<tr><th>Method</th><th>bias_gap</th><th>95% CI</th><th>Δgap vs original</th><th>顯著？</th></tr>
+<tr><td><strong>original</strong></td><td>0.389</td><td>[0.261, 0.515]</td><td>—</td><td>—</td></tr>
+<tr><td>random</td><td>0.407</td><td>[0.279, 0.540]</td><td>[−0.163, +0.200]</td><td class="no">no</td></tr>
+<tr><td>gender_direction</td><td>0.048</td><td>[−0.062, 0.159]</td><td>[−0.512, −0.169]</td><td class="yes">YES</td></tr>
+<tr class="main-row"><td>leace_bypass</td><td>0.049</td><td>[−0.066, 0.168]</td><td>[−0.516, −0.164]</td><td class="yes">YES</td></tr>
+<tr><td>leace_nobypass</td><td>0.030</td><td>[−0.083, 0.146]</td><td>[−0.530, −0.184]</td><td class="yes">YES</td></tr>
+</table>
+<p><strong>LEACE（bypass）將 stereotype gap 從 0.389 降至 0.049（−87%）</strong>，Δgap 的 95% CI 完全不含 0。</p>
+
+<h3>5.2 品質、語意、顯式控制（bootstrap 95% CI）</h3>
+<table>
+<tr><th>Method</th><th>UTMOS</th><th>WER</th><th>anchor control acc</th><th>neutral P(female)</th></tr>
+<tr><td>original</td><td>3.778 [3.72, 3.83]</td><td>0.186 [0.16, 0.21]</td><td>0.850 [0.70, 1.00]</td><td>0.648</td></tr>
+<tr><td>random</td><td>3.753 [3.69, 3.82]</td><td>0.213 [0.18, 0.24]</td><td>0.950 [0.85, 1.00]</td><td>0.659</td></tr>
+<tr><td>gender_direction</td><td>3.785 [3.73, 3.84]</td><td>0.206 [0.18, 0.24]</td><td>0.950 [0.85, 1.00]</td><td>0.571</td></tr>
+<tr class="main-row"><td>leace_bypass</td><td>3.834 [3.78, 3.88]</td><td>0.191 [0.16, 0.22]</td><td>1.000 [1.00, 1.00]</td><td>0.768</td></tr>
+<tr><td>leace_nobypass</td><td>3.764 [3.70, 3.82]</td><td>0.232 [0.20, 0.26]</td><td>0.800 [0.60, 0.95]</td><td>0.633</td></tr>
+</table>
+
+<h2>6. 假設判讀</h2>
+<table>
+<tr><th>假設</th><th>結果</th><th>證據</th></tr>
+<tr><td><strong>H1</strong>：原始存在 bias</td><td class="yes">✅ 成立</td><td>original bias_gap = 0.389，CI [0.26, 0.52] 不含 0</td></tr>
+<tr><td><strong>H2</strong>：LEACE 消除 bias</td><td class="yes">✅ 顯著成立</td><td>leace_bypass gap 0.389 → 0.049（−87%），Δgap CI 不含 0</td></tr>
+<tr><td><strong>H3</strong>：random 為 null control</td><td class="yes">✅ 成立</td><td>random gap 0.407（未降低），Δgap CI 跨 0</td></tr>
+<tr><td><strong>H4</strong>：品質/語意保留</td><td class="yes">✅ 成立</td><td>UTMOS 3.75–3.83、WER 0.19–0.23，CI 全部重疊</td></tr>
+<tr><td><strong>H5</strong>：bypass 保留顯式控制</td><td class="yes">✅ 成立</td><td>anchor control：bypass 1.00 &gt; nobypass 0.80</td></tr>
+</table>
+<p><strong>額外觀察</strong>：<code>gender_direction</code>（簡單均值差投影）同樣顯著降低 gap（0.048），顯示 rank-1 方向已捕捉大部分性別資訊；LEACE 的優勢在於同時維持最佳 UTMOS 與 100% 顯式控制。</p>
+
+<h2>7. 限制</h2>
+<ul>
+  <li><strong>顯式重建限制</strong>：原始 checkpoint、原生成音檔與完整 13,300 prompts 不存在，本專案為 baseline 重建，不宣稱 exact reproduction。</li>
+  <li><strong>grounded 職業性別不均</strong>（test 2M/3F）源自資料限制。</li>
+  <li><strong>全域 baseline 漂移</strong>：LEACE / gender-direction 會移動 neutral P(female)（leace_bypass 0.768），故採用不受此漂移影響的 bias_gap 為主指標。</li>
+  <li><strong>統計未完整</strong>：mixed-effects 模型尚未執行，目前為 bootstrap 層級分析。</li>
+</ul>
+
+<h2>8. 下一步</h2>
+<ol>
+  <li><strong>階段 6 — mixed-effects 統計</strong>：<code>G ~ Method × Status × Career × Persona + (1|Descriptor) + (1|Template) + (1|Transcript) + (1|Seed)</code></li>
+  <li><strong>階段 7 — 撰稿與復現包</strong>：整理結果表格 / 圖表、方法與限制敘述、完整復現腳本。</li>
+</ol>
+
+</body>
+</html>

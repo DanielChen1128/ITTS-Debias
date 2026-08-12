@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "experiment_id": "parler-mini-leace-legacy-5900-v1",
+  "dataset_id": "legacy-5900-v1",
+  "model_id": "parler-tts/parler-tts-mini-v1",
+  "model_revision_observed_in_local_cache": "0392b9451a601e528fd863bbb0598431fee810d9",
+  "model_revision_historical_use_verified": false,
+  "provenance_classification": "frozen-inputs-artifacts-outputs-partial-runtime",
+  "completed_runs": {
+    "pilot": {"prompts": 28, "methods": 5, "wav_count": 140},
+    "pilot_std": {"prompts": 140, "methods": 5, "wav_count": 700},
+    "main": {"prompts": 210, "methods": 5, "wav_count": 1050}
+  },
+  "input_sha256": {
+    "data/anchors_fit.json": "ad1a11ac63a3cde43bd8e2d091dd28cf1d7858aa963334ae504c481f071e36e3",
+    "data/anchors.json": "6fb604e388c616ac54d5f5fbee1a5a6f5bd6d5b81e311d5254693f9c1aa1f125",
+    "data/main.json": "dc901f9fcf08fe431cb9040f2a5def47467d4ca6476a0beece5fe6e9d5d89dfe",
+    "data/pilot.json": "a9b59fc0f5b40406245d5631f1e0249a1ea19f88e7a45c4411a1bfe5cea2d5b7",
+    "data/pilot_std.json": "daf535e727cf0c427c48f193ad68d706563d200d48b21a5ba40b5bf1cb1ec68b",
+    "data/splits.json": "de889cb5fc3486a9cb68d18b6fa66473f991f7f1bb30e2ebfffbad910e98c636"
+  },
+  "artifact_sha256": {
+    "artifacts/gender-direction.pt": "ac06348810bbeddc5f68318bf5115e2da7fc54b6784da2bce1116232b6ab87a9",
+    "artifacts/leace.pt": "92b9ed8b1eb13bdcfaa0bc48d8b1cc67a6e3bd44d7ee93006220c198364a23ae",
+    "artifacts/random.pt": "ece3c5d0f6f5ebba4f242593ba6f9fba53edf2e293709ae6298b11f57ff08692"
+  },
+  "record_sha256": {
+    "main/evaluation.json": "dc9b273eeb64aa7a23dc6b7fddd74aad9ac29b648c043c70a1212b0535a0cd7f",
+    "main/bootstrap.json": "935eb64a6caa3144fbb392ec2cda95a61004f3a65de6f9a93654c06298d0bf57",
+    "pilot/evaluation.json": "413600187aee9cd58b00b86fc16168bbd62d9395ab29cf27c4eef50fa372b71b",
+    "pilot_std/evaluation.json": "20e7ac78542c7df9806d7ebaa7140b95b21b1e4f33f61f7420c52d2aba441b3b",
+    "pilot_std/bootstrap.json": "27372e06974b1cd92745fb453c2bfe95f2e985a965dbc396899576f92b70f78b",
+    "screening/report.json": "dc56bf35dac7b97348b81f09057a6081d16210311484e799a8d7caf5f25714cf",
+    "wav_sha256.txt": "5b0688055c1596a5c24569e473ba6b649ba5fd68784f6b39ca835519bf73ca66"
+  },
+  "wav_manifest": {
+    "file": "wav_sha256.txt",
+    "wav_count": 1890,
+    "roots": ["results/pilot", "results/pilot_std", "results/main"]
+  },
+  "excluded_binary_roots": [
+    "artifacts/",
+    "models/",
+    "results/"
+  ],
+  "provenance_limitations": [
+    "The completed WAV directories predate generation manifests.",
+    "The fitted artifacts do not embed their input JSON hashes.",
+    "The exact Parler model revision used historically was not recorded; the cache revision is observational only.",
+    "The historical screening report labels spillover_split as dev, but the original code evaluated all grounded careers.",
+    "Byte-for-byte frozen inputs, artifacts, WAVs, and trackable result hashes are authoritative."
+  ]
+}
