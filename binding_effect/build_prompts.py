@@ -253,7 +253,7 @@ def rank_descriptors(detection_csvs, catalog, model_name):
                     raise ValueError(f"{detection_csv}: duplicate outcome for {descriptor_id} {pair}")
                 pairs.add(pair)
                 label = row.get("predicted_gender", "").lower()
-                if label not in ("female", "male", "child"):
+                if label not in ("female", "male"):
                     continue
                 female, total = totals.get(descriptor_id, (0, 0))
                 totals[descriptor_id] = (female + (label == "female"), total + 1)

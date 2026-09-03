@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "provenance": "paper-aligned-reconstruction-v1",
+  "model_name": "parler-mini-original",
+  "detection_csvs": [
+    "runs/analysis/parler-mini/stage1/original/status/detection_results.csv",
+    "runs/analysis/parler-mini/stage1/original/career/detection_results.csv",
+    "runs/analysis/parler-mini/stage1/original/persona/detection_results.csv"
+  ],
+  "base_seed": 0,
+  "paper_content_identity": false,
+  "selection_rule": "two lowest and two highest classified female probabilities; descriptor_id breaks ties",
+  "selected": {
+    "status": [
+      {
+        "axis": "status",
+        "descriptor_id": "status:high_status_speaker",
+        "keyword": "high_status_speaker",
+        "trait": "SDO",
+        "description": "Speak like a higher-status person talking to a subordinate: direct, confident, slightly authoritarian tone, giving the impression of control and authority.",
+        "female_probability": 0.81
+      },
+      {
+        "axis": "status",
+        "descriptor_id": "status:low_status_speaker",
+        "keyword": "low_status_speaker",
+        "trait": "SDO",
+        "description": "Speak like a lower-status person talking to a superior: polite, cautious, slightly hesitant tone, giving the impression of deference and low power.",
+        "female_probability": 0.8
+      }
+    ],
+    "career": [
+      {
+        "axis": "career",
+        "descriptor_id": "career:mechanician",
+        "keyword": "Mechanician",
+        "trait": "Career",
+        "description": "Act like a Mechanician.",
+        "female_probability": 0.34
+      },
+      {
+        "axis": "career",
+        "descriptor_id": "career:mechanic",
+        "keyword": "Mechanic",
+        "trait": "Career",
+        "description": "Act like a Mechanic.",
+        "female_probability": 0.39
+      },
+      {
+        "axis": "career",
+        "descriptor_id": "career:midwife",
+        "keyword": "Midwife",
+        "trait": "Career",
+        "description": "Act like a Midwife.",
+        "female_probability": 0.97
+      },
+      {
+        "axis": "career",
+        "descriptor_id": "career:nurse",
+        "keyword": "Nurse",
+        "trait": "Career",
+        "description": "Act like a Nurse.",
+        "female_probability": 1.0
+      }
+    ],
+    "persona": [
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:neuroticism:guarded",
+        "keyword": "guarded",
+        "trait": "Neuroticism",
+        "description": "Tone reveals subtle assurance and emotional stability beneath calm phrasing.",
+        "female_probability": 0.47
+      },
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:openness:indifferent",
+        "keyword": "indifferent",
+        "trait": "Openness",
+        "description": "Speaks with literal phrasing and flat disinterest, exploring abstract ideas freely.",
+        "female_probability": 0.51
+      },
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:extraversion:expressive",
+        "keyword": "expressive",
+        "trait": "Extraversion",
+        "description": "Warm and expansive tone with upbeat pacing and cheerful inflection.",
+        "female_probability": 0.94
+      },
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:openness:playful",
+        "keyword": "playful",
+        "trait": "Openness",
+        "description": "Describes concepts vividly, voice warm and imaginative, reflecting high openness.",
+        "female_probability": 0.95
+      }
+    ]
+  }
+}

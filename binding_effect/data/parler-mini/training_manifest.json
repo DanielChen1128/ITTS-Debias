@@ -1,0 +1,37 @@
+{
+  "protocol_id": "small-context-leace-v2",
+  "seed": 20260818,
+  "training_only": true,
+  "status_in_training": false,
+  "career_descriptor_ids": [
+    "career:nanny",
+    "career:receptionist",
+    "career:barber",
+    "career:mechanic"
+  ],
+  "persona_descriptor_ids": [
+    "persona:openness:curious",
+    "persona:openness:serious",
+    "persona:conscientiousness:disciplined",
+    "persona:conscientiousness:impulsive",
+    "persona:extraversion:energetic",
+    "persona:extraversion:reserved",
+    "persona:agreeableness:warm",
+    "persona:agreeableness:harsh"
+  ],
+  "context_counts": {
+    "neutral": 1,
+    "career": 4,
+    "persona": 8,
+    "career+persona": 32
+  },
+  "contexts": 45,
+  "templates": 6,
+  "genders": 2,
+  "anchors": 540,
+  "anchor_sha256": "a876f770ea4af2700e5e5b62327ec67426373970ba48045a135f7443f41d5ad1",
+  "source_sha256": {
+    "description_career_bias.json": "faffa2b10ce4cdc201054fe6470270028c2a9f373d5c9ba60fd521ff45ead1fd",
+    "descriptions_persona_bias.json": "ee973d75bc12118f0165a658c64d6ff77ea49561b5bbbd0383254381a067469f"
+  }
+}

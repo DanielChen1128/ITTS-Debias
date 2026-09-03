@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parler Mini / Large Constant Steering 2x - 2026-08-31</title>
+  <style>
+    :root {
+      --ink:#172033; --muted:#626d7d; --paper:#f5f4ef; --navy:#132a46;
+      --blue:#237b9f; --teal:#258a7b; --gold:#d79b32; --red:#b64a4a;
+      --line:#d8d6ce; --white:#fff; --pale:#e7f1f3; --sand:#f7eee0;
+    }
+    * { box-sizing:border-box; }
+    html,body { margin:0; padding:0; }
+    body { background:#222832; color:var(--ink); font-family:"Noto Sans CJK TC","Noto Sans CJK JP",sans-serif; display:flex; flex-direction:column; align-items:center; gap:28px; padding:28px 0; }
+    .slide { width:1280px; height:720px; position:relative; overflow:hidden; background:var(--paper); padding:42px 58px 40px; box-shadow:0 14px 36px rgba(0,0,0,.28); display:flex; flex-direction:column; }
+    .slide::after { content:attr(data-page); position:absolute; right:34px; bottom:18px; color:#7c8491; font-size:13px; font-weight:600; }
+    h1,h2,h3,p { margin-top:0; }
+    h1,h2,.serif { font-family:"Noto Serif CJK TC","Noto Serif CJK JP",serif; }
+    h2 { font-size:32px; line-height:1.18; margin-bottom:18px; color:var(--navy); }
+    h2::after { content:""; display:block; width:74px; height:5px; background:var(--gold); margin-top:10px; }
+    h3 { font-size:19px; margin-bottom:9px; color:var(--navy); }
+    p,li { font-size:17px; line-height:1.42; }
+    ul,ol { margin:0; padding-left:24px; }
+    li { margin-bottom:7px; }
+    code { font-family:"Noto Sans Mono CJK TC",monospace; font-size:.92em; }
+    .footer { position:absolute; left:58px; bottom:18px; font-size:12px; color:#7c8491; }
+    .title { background:var(--navy); color:var(--white); padding:72px; justify-content:center; }
+    .title::before { content:""; position:absolute; width:540px; height:540px; border:2px solid rgba(255,255,255,.12); border-radius:50%; right:-140px; top:-210px; }
+    .title::after { color:rgba(255,255,255,.55); }
+    .title h1 { font-size:51px; line-height:1.15; max-width:980px; margin-bottom:18px; }
+    .title .subtitle { font-size:23px; color:#9cd4dd; margin-bottom:42px; }
+    .title .meta { border-left:5px solid var(--gold); padding-left:20px; font-size:18px; line-height:1.7; }
+    .title .footer { color:rgba(255,255,255,.55); left:72px; }
+    .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:22px; flex:1; }
+    .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; flex:1; }
+    .card { background:var(--white); border:1px solid var(--line); border-top:6px solid var(--blue); border-radius:10px; padding:18px 20px; }
+    .card.teal { border-top-color:var(--teal); }
+    .card.gold { border-top-color:var(--gold); }
+    .card.red { border-top-color:var(--red); }
+    .card p,.card li { font-size:16px; }
+    .kpis { display:grid; grid-template-columns:repeat(4,1fr); gap:15px; margin-bottom:20px; }
+    .kpi { background:var(--white); border:1px solid var(--line); border-radius:10px; padding:15px 17px; }
+    .kpi strong { display:block; font-size:29px; line-height:1.1; color:var(--navy); }
+    .kpi span { display:block; font-size:13px; color:var(--muted); margin-top:6px; line-height:1.35; }
+    .callout { background:var(--pale); border-left:6px solid var(--teal); padding:12px 17px; border-radius:5px; margin-top:14px; }
+    .callout p { font-size:16px; margin:0; }
+    .warning { background:var(--sand); border-left-color:var(--gold); }
+    table { width:100%; border-collapse:collapse; background:var(--white); font-size:15px; }
+    th { background:var(--navy); color:var(--white); text-align:left; padding:9px 11px; }
+    td { border-bottom:1px solid #e2e2de; padding:8px 11px; line-height:1.3; }
+    tbody tr:last-child td { border-bottom:none; }
+    .main-row td { background:#e7f3ef; font-weight:700; }
+    .small { font-size:13px !important; color:var(--muted); }
+    .good { color:#177366; font-weight:700; }
+    .accent { color:var(--blue); font-weight:700; }
+    .pipeline { display:grid; grid-template-columns:1fr 48px 1fr 48px 1fr 48px 1fr; gap:7px; align-items:stretch; margin:12px 0 20px; }
+    .node { background:var(--white); border:1px solid var(--line); border-radius:9px; padding:15px; text-align:center; font-size:14px; }
+    .node strong { display:block; color:var(--navy); font-size:17px; margin-bottom:6px; }
+    .arrow { font-size:30px; color:var(--gold); align-self:center; text-align:center; }
+    .metric { display:grid; grid-template-columns:165px 1fr 1fr; gap:11px; align-items:center; margin:10px 0; }
+    .metric .label { font-size:14px; font-weight:700; }
+    .bar { height:34px; background:#e1e3e5; border-radius:5px; overflow:hidden; position:relative; }
+    .bar i { display:block; height:100%; background:var(--blue); }
+    .bar.teal i { background:var(--teal); }
+    .bar span { position:absolute; right:8px; top:7px; font-size:13px; font-weight:700; color:var(--ink); }
+    .bar.dark span { color:white; }
+    .tag { display:inline-block; padding:4px 9px; border-radius:12px; background:#e6edf2; color:var(--navy); font-size:12px; font-weight:700; margin:2px 3px 2px 0; }
+    .note { font-size:14px; color:var(--muted); line-height:1.4; }
+    @media print {
+      @page { size:13.333333in 7.5in; margin:0; }
+      body { background:white; padding:0; gap:0; display:block; }
+      .slide { box-shadow:none; page-break-after:always; break-after:page; }
+      .slide:last-child { page-break-after:auto; }
+    }
+  </style>
+</head>
+<body>
+  <section class="slide title" data-page="1">
+    <div class="subtitle">Instruction TTS / Binary Gender Evaluation</div>
+    <h1>Parler Mini / Large<br>Constant Steering 2x</h1>
+    <div class="meta">13,300-prompt bias evaluation per model<br>64-cell interaction analysis · 500-pair automated quality report<br>Lab meeting · 2026-08-31</div>
+    <div class="footer">ITTS_Debias / small-context-leace-v2</div>
+  </section>
+
+  <section class="slide" data-page="2">
+    <h2>本次實驗回答的問題</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>Bias與binding</h3>
+        <ol>
+          <li>相同的constant steering 2x能否跨Mini與Large降低global female skew？</li>
+          <li>career、persona、status與compositional prompts的變化是否一致？</li>
+          <li>64個matched cells的interaction magnitude如何改變？</li>
+        </ol>
+      </div>
+      <div class="card teal">
+        <h3>語音輸出</h3>
+        <ol start="4">
+          <li>500組paired samples的UTMOS與Whisper WER差異為何？</li>
+          <li>平均差異是否集中於特定prompt stratum？</li>
+          <li>哪些觀察仍需要人工聽測確認？</li>
+        </ol>
+      </div>
+    </div>
+    <div class="callout"><p>本次以觀察值與不確定區間為主，不將單一自動指標判定等同於主觀可感知品質。</p></div>
+    <div class="footer">Research questions</div>
+  </section>
+
+  <section class="slide" data-page="3">
+    <h2>共同實驗設定</h2>
+    <table>
+      <thead><tr><th>Item</th><th>Parler Mini</th><th>Parler Large</th></tr></thead>
+      <tbody>
+        <tr><td>Model revision</td><td><code>0392b945...810d9</code></td><td><code>50cb4b87...4f11e</code></td></tr>
+        <tr><td>Encoder width</td><td>1,024</td><td>1,536</td></tr>
+        <tr><td>Method</td><td>Female-to-male constant centroid steering</td><td>Same</td></tr>
+        <tr><td>Strength</td><td>2x</td><td>2x</td></tr>
+        <tr><td>Intervention point</td><td>Pooled final encoder representation</td><td>Same</td></tr>
+        <tr><td>Explicit prompts</td><td>Regex bypass</td><td>Regex bypass</td></tr>
+        <tr><td>Generation</td><td>Batch 8, fixed prompts/seeds</td><td>Same</td></tr>
+      </tbody>
+    </table>
+    <div class="callout warning"><p>Steering direction依checkpoint分別fit；統一的是演算法、anchor protocol與2x strength，不共用tensor。</p></div>
+    <div class="footer">Method</div>
+  </section>
+
+  <section class="slide" data-page="4">
+    <h2>完成規模與分析流程</h2>
+    <div class="kpis">
+      <div class="kpi"><strong>26,600</strong><span>兩模型bias WAV總數</span></div>
+      <div class="kpi"><strong>1,000</strong><span>paired quality samples</span></div>
+      <div class="kpi"><strong>128</strong><span>interaction cells</span></div>
+      <div class="kpi"><strong>10,000</strong><span>randomizations per cell</span></div>
+    </div>
+    <div class="pipeline">
+      <div class="node"><strong>Prompts</strong>6,900 single-axis<br>6,400 compositional</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>Generation</strong>Original / 2x<br>matched seeds</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>Gender</strong>female vs. male<br>binary score rule</div>
+      <div class="arrow">→</div>
+      <div class="node"><strong>Evaluation</strong>interactions<br>UTMOS / WER</div>
+    </div>
+    <table>
+      <thead><tr><th>Component</th><th>Mini</th><th>Large</th></tr></thead>
+      <tbody><tr><td>Bias evaluation</td><td>13,300 / 13,300</td><td>13,300 / 13,300</td></tr><tr><td>Quality pairs</td><td>500 / 500</td><td>500 / 500</td></tr></tbody>
+    </table>
+    <div class="footer">Evaluation scope</div>
+  </section>
+
+  <section class="slide" data-page="5">
+    <h2>Global female rate往50%移動</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>Parler Mini</h3>
+        <div class="metric"><div class="label">Original</div><div class="bar dark"><i style="width:78.23%"></i><span>78.23%</span></div><div></div></div>
+        <div class="metric"><div class="label">Steering 2x</div><div class="bar teal dark"><i style="width:56.26%"></i><span>56.26%</span></div><div class="accent">−21.97 pp</div></div>
+        <p>Distance to 50%：28.23 → 6.26 pp</p>
+      </div>
+      <div class="card teal">
+        <h3>Parler Large</h3>
+        <div class="metric"><div class="label">Original</div><div class="bar dark"><i style="width:74.73%"></i><span>74.73%</span></div><div></div></div>
+        <div class="metric"><div class="label">Steering 2x</div><div class="bar teal dark"><i style="width:51.37%"></i><span>51.37%</span></div><div class="accent">−23.36 pp</div></div>
+        <p>Distance to 50%：24.73 → 1.37 pp</p>
+      </div>
+    </div>
+    <div class="callout"><p>Global rate是所有prompt sets的aggregate；是否存在axis-level cancellation需另外檢查。</p></div>
+    <div class="footer">Global calibration</div>
+  </section>
+
+  <section class="slide" data-page="6">
+    <h2>Axis-level female rate</h2>
+    <table>
+      <thead><tr><th>Prompt set</th><th>Mini Original</th><th>Mini 2x</th><th>Large Original</th><th>Large 2x</th></tr></thead>
+      <tbody>
+        <tr><td>Status</td><td>80.50%</td><td>52.50%</td><td>58.00%</td><td>30.00%</td></tr>
+        <tr><td>Career</td><td>79.56%</td><td>60.70%</td><td>88.37%</td><td>72.48%</td></tr>
+        <tr><td>Persona</td><td>77.05%</td><td>49.68%</td><td>85.58%</td><td>61.30%</td></tr>
+        <tr><td>Two-axis</td><td>78.94%</td><td>59.59%</td><td>64.05%</td><td>40.23%</td></tr>
+        <tr><td>Three-axis</td><td>77.72%</td><td>57.62%</td><td>61.41%</td><td>33.62%</td></tr>
+        <tr class="main-row"><td>Global</td><td>78.23%</td><td>56.26%</td><td>74.73%</td><td>51.37%</td></tr>
+      </tbody>
+    </table>
+    <div class="grid2" style="margin-top:18px; flex:0;">
+      <div class="card"><h3>Mini</h3><p>五組female rate均降低；persona為49.68%，其他組仍偏female。</p></div>
+      <div class="card gold"><h3>Large</h3><p>Career仍偏female；status與compositional prompts移向male側。</p></div>
+    </div>
+    <div class="footer">Axis-level calibration</div>
+  </section>
+
+  <section class="slide" data-page="7">
+    <h2>Binding interaction magnitude</h2>
+    <div class="kpis">
+      <div class="kpi"><strong>−56.7%</strong><span>Mini mean |I|</span></div>
+      <div class="kpi"><strong>11 → 0</strong><span>Mini strong cells</span></div>
+      <div class="kpi"><strong>−58.4%</strong><span>Large mean |I|</span></div>
+      <div class="kpi"><strong>37 → 3</strong><span>Large strong cells</span></div>
+    </div>
+    <table>
+      <thead><tr><th>Model</th><th>Original mean |I|</th><th>Steering 2x mean |I|</th><th>Moderate before</th><th>Moderate after</th><th>Not significant after</th></tr></thead>
+      <tbody>
+        <tr><td>Mini</td><td>1.7151</td><td>0.7431</td><td>19</td><td>10</td><td>54 / 64</td></tr>
+        <tr><td>Large</td><td>3.2581</td><td>1.3546</td><td>13</td><td>20</td><td>41 / 64</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p>兩模型皆呈現interaction attenuation；Large仍保留3個strong及20個moderate cells。</p></div>
+    <div class="footer">64 matched cells · 10,000 randomizations</div>
+  </section>
+
+  <section class="slide" data-page="8">
+    <h2>Mini四個interaction families皆下降</h2>
+    <table>
+      <thead><tr><th>Family</th><th>Original mean |I|</th><th>Mini 2x</th><th>Relative change</th></tr></thead>
+      <tbody>
+        <tr><td>Career + persona</td><td>1.5072</td><td>0.8866</td><td>−41.2%</td></tr>
+        <tr><td>Status + career</td><td>1.9738</td><td>0.9528</td><td>−51.7%</td></tr>
+        <tr><td>Status + career + persona</td><td>1.7386</td><td>0.6860</td><td>−60.5%</td></tr>
+        <tr><td>Status + persona</td><td>1.7777</td><td>0.4744</td><td>−73.3%</td></tr>
+      </tbody>
+    </table>
+    <div class="grid2" style="margin-top:20px; flex:0;">
+      <div class="card teal"><h3>共同方向</h3><p>四個families的mean absolute interaction都較Original低。</p></div>
+      <div class="card"><h3>剩餘結構</h3><p>Mini 2x後沒有strong interaction，仍有10個moderate cells。</p></div>
+    </div>
+    <div class="footer">Mini family-level interactions</div>
+  </section>
+
+  <section class="slide" data-page="9">
+    <h2>500-pair automated quality evaluation</h2>
+    <div class="kpis">
+      <div class="kpi"><strong>500</strong><span>pairs per model</span></div>
+      <div class="kpi"><strong>5 × 100</strong><span>fixed strata</span></div>
+      <div class="kpi"><strong>UTMOS</strong><span>speech-quality proxy</span></div>
+      <div class="kpi"><strong>WER</strong><span>intelligibility proxy</span></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h3>Paired design</h3>
+        <ul><li>Original與2x使用相同prompt IDs。</li><li>五組各100 pairs。</li><li>報告mean delta與95% bootstrap CI。</li></ul>
+      </div>
+      <div class="card gold">
+        <h3>解讀方式</h3>
+        <ul><li>先呈現實際差值與分布。</li><li>分開查看每個stratum。</li><li>不將自動分數直接視為人耳判斷。</li></ul>
+      </div>
+    </div>
+    <div class="footer">Quality protocol</div>
+  </section>
+
+  <section class="slide" data-page="10">
+    <h2>Mini：global WER幾乎不變</h2>
+    <div class="grid2" style="flex:0; margin-bottom:18px;">
+      <div class="card teal"><h3>UTMOS</h3><p><strong>3.8507 → 3.8186</strong></p><p>Δ −0.0321<br><span class="note">95% CI [−0.0777, +0.0142]</span></p></div>
+      <div class="card teal"><h3>WER</h3><p><strong>0.1752 → 0.1750</strong></p><p>Δ −0.0002<br><span class="note">95% CI [−0.0185, +0.0184]</span></p></div>
+    </div>
+    <table>
+      <thead><tr><th>Stratum</th><th>UTMOS delta</th><th>WER delta</th></tr></thead>
+      <tbody><tr><td>Status</td><td>−0.0935</td><td>+0.0137</td></tr><tr><td>Career</td><td>+0.0278</td><td>−0.0214</td></tr><tr><td>Persona</td><td>−0.0034</td><td>−0.0094</td></tr><tr><td>Two-axis</td><td>−0.0985</td><td>+0.0183</td></tr><tr><td>Three-axis</td><td>+0.0070</td><td>−0.0021</td></tr></tbody>
+    </table>
+    <div class="footer">Mini · 500 paired samples</div>
+  </section>
+
+  <section class="slide" data-page="11">
+    <h2>Large：差異集中於部分strata</h2>
+    <div class="grid2" style="flex:0; margin-bottom:18px;">
+      <div class="card gold"><h3>UTMOS</h3><p><strong>3.5083 → 3.3919</strong></p><p>Δ −0.1163<br><span class="note">95% CI [−0.1916, −0.0397]</span></p></div>
+      <div class="card gold"><h3>WER</h3><p><strong>0.2931 → 0.3516</strong></p><p>Δ +0.0586<br><span class="note">95% CI [+0.0026, +0.1452]</span></p></div>
+    </div>
+    <table>
+      <thead><tr><th>Stratum</th><th>UTMOS delta</th><th>WER delta</th></tr></thead>
+      <tbody><tr><td>Status</td><td>−0.1668</td><td>+0.1843</td></tr><tr><td>Career</td><td>−0.1203</td><td>+0.0275</td></tr><tr><td>Persona</td><td>−0.1689</td><td>+0.0470</td></tr><tr><td>Two-axis</td><td>−0.1293</td><td>+0.0381</td></tr><tr><td>Three-axis</td><td>+0.0036</td><td>−0.0040</td></tr></tbody>
+    </table>
+    <div class="footer">Large · 500 paired samples</div>
+  </section>
+
+  <section class="slide" data-page="12">
+    <h2>自動品質數值的解讀範圍</h2>
+    <div class="grid2">
+      <div class="card">
+        <h3>目前可以直接報告</h3>
+        <ul>
+          <li>Mini的global差值小，WER近似不變。</li>
+          <li>Large的平均差值較Mini明顯。</li>
+          <li>Large差異具有stratum heterogeneity。</li>
+          <li>Three-axis在兩項Large指標上接近不變。</li>
+        </ul>
+      </div>
+      <div class="card gold">
+        <h3>目前無法由自動指標回答</h3>
+        <ul>
+          <li>聽者是否能穩定辨認兩版本。</li>
+          <li>自然度差異是否具有實際影響。</li>
+          <li>WER變化是否來自聲音、節奏或ASR模型。</li>
+          <li>第二個品質模型是否得到相同排序。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout"><p>適合的下一個證據是blind paired listening與metric triangulation，而不是只增加同一指標的樣本數。</p></div>
+    <div class="footer">Interpretation limits</div>
+  </section>
+
+  <section class="slide" data-page="13">
+    <h2>相同2x方法的跨模型觀察</h2>
+    <table>
+      <thead><tr><th>Observation</th><th>Mini 2x</th><th>Large 2x</th></tr></thead>
+      <tbody>
+        <tr><td>Global female rate</td><td>78.23% → 56.26%</td><td>74.73% → 51.37%</td></tr>
+        <tr><td>Axis response</td><td>五組都降低；persona接近50%</td><td>不同axis位移量差異較大</td></tr>
+        <tr><td>Mean |I|</td><td>1.7151 → 0.7431</td><td>3.2581 → 1.3546</td></tr>
+        <tr><td>Strong interactions</td><td>11 → 0</td><td>37 → 3</td></tr>
+        <tr><td>Automated quality</td><td>Global差異小</td><td>平均差異較Mini明顯，且依stratum變化</td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><p>相同演算法與strength在兩個模型都降低global skew與interaction magnitude，但模型與axis對steering的response不同。</p></div>
+    <div class="footer">Cross-model comparison</div>
+  </section>
+
+  <section class="slide" data-page="14">
+    <h2>目前觀察與後續工作</h2>
+    <div class="grid2">
+      <div class="card teal">
+        <h3>目前觀察</h3>
+        <ul>
+          <li>Mini與Large的global female skew都降低。</li>
+          <li>Mean interaction magnitude分別降低56.7%與58.4%。</li>
+          <li>Mini的500-pair自動品質指標平均變化有限。</li>
+          <li>Large的自動品質差異集中於部分strata。</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>後續工作</h3>
+        <ol>
+          <li>五個strata的blind paired listening。</li>
+          <li>較大型Whisper與第二個quality estimator。</li>
+          <li>較低strength或axis-aware calibration。</li>
+          <li>整理Mini RLACE-8與2x的paper ablation。</li>
+        </ol>
+      </div>
+    </div>
+    <div class="callout warning"><p>報告範圍：output-level calibration、interaction attenuation與automated quality observations；不延伸為representation erasure或uniform subgroup parity。</p></div>
+    <div class="footer">Sources: binding_effect/runs/analysis/small-context-leace-v2/</div>
+  </section>
+</body>
+</html>

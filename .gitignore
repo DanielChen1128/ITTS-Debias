@@ -5,3 +5,22 @@ papers/*.pdf
 .cache/
 __pycache__/
 *.py[cod]
+
+# Third-party model source (VoxInstruct etc.) retained locally but not redistributed.
+binding_effect/backends/
+
+# Local machine-specific model wiring (shared weight + backend paths).
+binding_effect/model_config.json
+
+# Regenerable experimental outputs and local model caches.
+binding_effect/ITTS_audios/
+binding_effect/results/
+binding_effect/artifacts/
+binding_effect/models/
+binding_effect/analysis/
+binding_effect/logs/
+binding_effect/runs/*
+!binding_effect/runs/README.md
+binding_effect/**/*.wav
+binding_effect/**/*.pt
+binding_effect/**/*.log

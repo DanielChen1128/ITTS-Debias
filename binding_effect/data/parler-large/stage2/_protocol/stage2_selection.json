@@ -1,0 +1,101 @@
+{
+  "schema_version": 1,
+  "provenance": "paper-aligned-reconstruction-v1",
+  "model_name": "parler-large-original",
+  "detection_csvs": [
+    "runs/analysis/parler-large/stage1/original/status/detection_results.csv",
+    "runs/analysis/parler-large/stage1/original/career/detection_results.csv",
+    "runs/analysis/parler-large/stage1/original/persona/detection_results.csv"
+  ],
+  "base_seed": 0,
+  "paper_content_identity": false,
+  "selection_rule": "two lowest and two highest classified female probabilities; descriptor_id breaks ties",
+  "selected": {
+    "status": [
+      {
+        "axis": "status",
+        "descriptor_id": "status:high_status_speaker",
+        "keyword": "high_status_speaker",
+        "trait": "SDO",
+        "description": "Speak like a higher-status person talking to a subordinate: direct, confident, slightly authoritarian tone, giving the impression of control and authority.",
+        "female_probability": 0.86
+      },
+      {
+        "axis": "status",
+        "descriptor_id": "status:low_status_speaker",
+        "keyword": "low_status_speaker",
+        "trait": "SDO",
+        "description": "Speak like a lower-status person talking to a superior: polite, cautious, slightly hesitant tone, giving the impression of deference and low power.",
+        "female_probability": 0.29
+      }
+    ],
+    "career": [
+      {
+        "axis": "career",
+        "descriptor_id": "career:fisherman",
+        "keyword": "Fisherman",
+        "trait": "Career",
+        "description": "Act like a Fisherman.",
+        "female_probability": 0.3
+      },
+      {
+        "axis": "career",
+        "descriptor_id": "career:butcher",
+        "keyword": "Butcher",
+        "trait": "Career",
+        "description": "Act like a Butcher.",
+        "female_probability": 0.6
+      },
+      {
+        "axis": "career",
+        "descriptor_id": "career:midwife",
+        "keyword": "Midwife",
+        "trait": "Career",
+        "description": "Act like a Midwife.",
+        "female_probability": 1.0
+      },
+      {
+        "axis": "career",
+        "descriptor_id": "career:teacher",
+        "keyword": "Teacher",
+        "trait": "Career",
+        "description": "Act like a Teacher.",
+        "female_probability": 1.0
+      }
+    ],
+    "persona": [
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:extraversion:reserved",
+        "keyword": "reserved",
+        "trait": "Extraversion",
+        "description": "Narrow and distant tone with downbeat pacing and gloomy inflection.",
+        "female_probability": 0.42
+      },
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:extraversion:unenthusiastic",
+        "keyword": "unenthusiastic",
+        "trait": "Extraversion",
+        "description": "Dull, sluggish tone, frequent inflection changes, and a socially withdrawn pace.",
+        "female_probability": 0.53
+      },
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:openness:uncreative",
+        "keyword": "uncreative",
+        "trait": "Openness",
+        "description": "Voice shifts dynamically, revealing disinterest and a taste for new perspectives.",
+        "female_probability": 0.97
+      },
+      {
+        "axis": "persona",
+        "descriptor_id": "persona:openness:creative",
+        "keyword": "creative",
+        "trait": "Openness",
+        "description": "Voice shifts dynamically, revealing curiosity and a taste for new perspectives.",
+        "female_probability": 1.0
+      }
+    ]
+  }
+}

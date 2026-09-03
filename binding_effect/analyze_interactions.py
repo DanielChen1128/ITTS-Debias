@@ -7,7 +7,7 @@ import json
 import sys
 from pathlib import Path
 
-from binding_stats import paper_labels, permutation_test, validate_interaction_spec
+from binding_stats import binary_labels, permutation_test, validate_interaction_spec
 
 
 def load_labels(path):
@@ -15,7 +15,9 @@ def load_labels(path):
         rows = list(csv.DictReader(handle))
     if not rows or "predicted_gender" not in rows[0]:
         raise ValueError(f"{path}: missing predicted_gender column")
-    return paper_labels(row["predicted_gender"] for row in rows)
+    if any(row["predicted_gender"].strip().lower() == "child" for row in rows):
+        raise ValueError(f"{path}: child labels must be recomputed as female or male")
+    return binary_labels(row["predicted_gender"] for row in rows)
 
 
 def main():
@@ -37,19 +39,17 @@ def main():
     output_rows = []
     spec_dir = Path(args.spec).resolve().parent
     for item in spec["interactions"]:
-        groups, adult_counts, child_counts, exclusions = [], [], [], []
+        groups, exclusions = [], []
         for condition in item["conditions"]:
             condition_path = Path(condition["csv"])
             if not condition_path.is_absolute():
                 condition_path = spec_dir / condition_path
             try:
-                labels, adult, counts, excluded = load_labels(condition_path)
+                labels, excluded = load_labels(condition_path)
             except (OSError, ValueError) as exc:
                 print(f"[ERROR] incomplete condition {condition['name']}: {exc}", file=sys.stderr)
                 return 2
             groups.append(labels)
-            adult_counts.append(len(adult))
-            child_counts.append(counts["child"])
             exclusions.append(sum(excluded.values()))
         coefficients = [1, -1, -1] if item["order"] == 2 else [1, -1, -1, -1, 1, 1, 1]
         value, p_value, significance = permutation_test(
@@ -58,8 +58,7 @@ def main():
         output_rows.append({
             "name": item["name"], "order": item["order"], "interaction": value,
             "p_value": p_value, "significance": significance,
-            "classified_n": sum(map(len, groups)), "adult_n": sum(adult_counts),
-            "child_n": sum(child_counts), "unknown_or_other_n": sum(exclusions),
+            "classified_n": sum(map(len, groups)), "excluded_n": sum(exclusions),
         })
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)

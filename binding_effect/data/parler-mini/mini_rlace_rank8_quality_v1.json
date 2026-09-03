@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "protocol_id": "parler-mini-rlace-rank8-paired-quality-v1",
+  "description": "Frozen paired Original vs rlace-rank-8 UTMOS and Whisper subset.",
+  "selection_rule": {
+    "algorithm": "Within each stratum, sort by SHA-256(seed + NUL + stratum + NUL + prompt id), then id; take first 20.",
+    "seed": "mini-rlace-rank8-quality-v1",
+    "pairs_per_stratum": 20,
+    "total_pairs": 100,
+    "total_wavs": 200
+  },
+  "sources": {
+    "stage1-status": {
+      "prompt_path": "descriptions/descriptions_status_bias.json",
+      "sha256": "ff729a1bace361d8bed732a1d27ad58bd0646eaf270eaadd69670f86ed6f88b9",
+      "population": 200
+    },
+    "stage1-career": {
+      "prompt_path": "descriptions/description_career_bias.json",
+      "sha256": "faffa2b10ce4cdc201054fe6470270028c2a9f373d5c9ba60fd521ff45ead1fd",
+      "population": 2700
+    },
+    "stage1-persona": {
+      "prompt_path": "descriptions/descriptions_persona_bias.json",
+      "sha256": "ee973d75bc12118f0165a658c64d6ff77ea49561b5bbbd0383254381a067469f",
+      "population": 4000
+    },
+    "stage2-two-axis": {
+      "prompt_path": "data/parler-mini/stage2/descriptions_two_axis.json",
+      "sha256": "3a5d47c8390268f8c8451a42a54ba3ec3c6deeb3d4fef82e29e90470bf12cbbb",
+      "population": 3200
+    },
+    "stage2-three-axis": {
+      "prompt_path": "data/parler-mini/stage2/descriptions_multi_axis.json",
+      "sha256": "c25771dc45a498e1d331ea145420e228a8e014db7cb30f6d76bce755e2e15cf8",
+      "population": 3200
+    }
+  },
+  "method_directories": {
+    "original": {
+      "stage1-status": "results/parler-mini/original/stage1/status",
+      "stage1-career": "results/parler-mini/original/stage1/career",
+      "stage1-persona": "results/parler-mini/original/stage1/persona",
+      "stage2-two-axis": "results/parler-mini/original/stage2/two-axis",
+      "stage2-three-axis": "results/parler-mini/original/stage2/three-axis"
+    },
+    "rlace-rank-8": {
+      "stage1-status": "results/parler-mini/rlace-rank-8/stage1/status",
+      "stage1-career": "results/parler-mini/rlace-rank-8/stage1/career",
+      "stage1-persona": "results/parler-mini/rlace-rank-8/stage1/persona",
+      "stage2-two-axis": "results/parler-mini/rlace-rank-8/stage2/two-axis",
+      "stage2-three-axis": "results/parler-mini/rlace-rank-8/stage2/three-axis"
+    }
+  },
+  "selection": {
+    "stage1-status": [
+      "0000181", "0000046", "0000106", "0000134", "0000120",
+      "0000176", "0000183", "0000195", "0000049", "0000149",
+      "0000147", "0000194", "0000060", "0000032", "0000186",
+      "0000012", "0000094", "0000184", "0000058", "0000090"
+    ],
+    "stage1-career": [
+      "0002085", "0001634", "0000945", "0000583", "0002362",
+      "0001545", "0001058", "0001468", "0001643", "0000017",
+      "0000478", "0001228", "0002043", "0000243", "0001013",
+      "0001909", "0000721", "0001828", "0002257", "0000080"
+    ],
+    "stage1-persona": [
+      "0003940", "0000439", "0002050", "0003867", "0001517",
+      "0001687", "0003468", "0001589", "0003562", "0002575",
+      "0000961", "0000740", "0001691", "0003359", "0003314",
+      "0000481", "0003495", "0001907", "0002711", "0001157"
+    ],
+    "stage2-two-axis": [
+      "0000846", "0001609", "0000042", "0002407", "0002378",
+      "0002696", "0001552", "0000394", "0001889", "0002481",
+      "0002310", "0000388", "0000474", "0003084", "0002340",
+      "0002361", "0001475", "0001982", "0001887", "0001303"
+    ],
+    "stage2-three-axis": [
+      "0002731", "0000390", "0000765", "0000497", "0000548",
+      "0002069", "0001576", "0003100", "0000550", "0001571",
+      "0002881", "0002096", "0002782", "0002509", "0001884",
+      "0002485", "0001644", "0000581", "0002438", "0002329"
+    ]
+  }
+}

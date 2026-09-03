@@ -20,31 +20,6 @@ def binary_labels(labels):
     return values, excluded
 
 
-def paper_labels(labels):
-    """Encode the paper's female event over successful classifier outcomes.
-
-    Female is 1; male and child are non-female (0). Unknown and unrecognized
-    outcomes are excluded because D(y) did not produce a classifier outcome.
-    Adult-only labels are returned separately for transparent secondary rates.
-    """
-    values = []
-    adult = []
-    excluded = {"unknown": 0, "other": 0}
-    counts = {"female": 0, "male": 0, "child": 0}
-    for label in labels:
-        normalized = str(label).strip().lower()
-        if normalized in counts:
-            counts[normalized] += 1
-            values.append(1 if normalized == "female" else 0)
-            if normalized != "child":
-                adult.append(1 if normalized == "female" else 0)
-        elif normalized == "unknown":
-            excluded["unknown"] += 1
-        else:
-            excluded["other"] += 1
-    return values, adult, counts, excluded
-
-
 def _corrected_counts(labels):
     successes = sum(labels)
     failures = len(labels) - successes

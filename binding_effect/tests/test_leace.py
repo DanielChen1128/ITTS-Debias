@@ -7,6 +7,7 @@ import torch
 from debias.leace import LeaceEraser
 from debias.parler import (
     encode_description_states,
+    erase_description_states,
     generate_with_eraser,
     has_explicit_gender_command,
     masked_mean,
@@ -112,6 +113,55 @@ class LeaceTests(unittest.TestCase):
         torch.testing.assert_close(
             model.generated_states, torch.tensor([[[2.0, 2.0], [0.0, 0.0]]])
         )
+
+    def test_generation_interpolates_eraser(self):
+        model = _Model()
+        ids = torch.tensor([[2, 0]])
+        mask = torch.tensor([[1, 0]])
+        _, intervention = generate_with_eraser(
+            model, lambda states: states + 10, "A calm speaker", ids, mask,
+            intervention_strength=0.25, return_intervention=True,
+        )
+        torch.testing.assert_close(
+            model.generated_states, torch.tensor([[[4.5, 4.5], [0.0, 0.0]]])
+        )
+        self.assertEqual(intervention["intervention_strength"], 0.25)
+
+    def test_pooled_shift_matches_erased_mean_and_preserves_token_residuals(self):
+        states = torch.tensor([[[1.0, 3.0], [5.0, 7.0], [0.0, 0.0]]])
+        mask = torch.tensor([[1, 1, 0]])
+        eraser = lambda values: values + torch.tensor([2.0, -1.0])
+
+        shifted = erase_description_states(states, mask, eraser, mode="pooled-shift")
+
+        torch.testing.assert_close(masked_mean(shifted, mask), eraser(masked_mean(states, mask)))
+        torch.testing.assert_close(shifted[:, 1] - shifted[:, 0], states[:, 1] - states[:, 0])
+        torch.testing.assert_close(shifted[:, 2], torch.zeros(1, 2))
+
+    def test_generation_records_pooled_shift_mode(self):
+        _, intervention = generate_with_eraser(
+            _Model(), lambda values: values + 1, "A calm speaker",
+            torch.tensor([[2, 0]]), torch.tensor([[1, 0]]),
+            intervention_mode="pooled-shift", return_intervention=True,
+        )
+        self.assertEqual(intervention["intervention_mode"], "pooled-shift")
+
+    def test_generation_rejects_negative_intervention_strength(self):
+        with self.assertRaisesRegex(ValueError, "non-negative"):
+            generate_with_eraser(
+                _Model(), lambda states: states, "A calm speaker",
+                torch.tensor([[2]]), torch.tensor([[1]]),
+                intervention_strength=-0.1,
+            )
+
+    def test_generation_allows_extrapolated_intervention_strength(self):
+        model = _Model()
+        generate_with_eraser(
+            model, lambda states: states + 3, "A calm speaker",
+            torch.tensor([[2]]), torch.tensor([[1]]),
+            intervention_strength=2.0,
+        )
+        torch.testing.assert_close(model.generated_states, torch.tensor([[[8.0, 8.0]]]))
 
 
 if __name__ == "__main__":

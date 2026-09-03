@@ -50,19 +50,25 @@ sys.path.insert(0, str(GENDER_DETECT_DIR))
 # Gender Detection using audonnx
 # ============================================================
 
+def binary_gender_label(female_score: float, male_score: float) -> str:
+    """Return the higher-scoring binary gender label."""
+    return 'female' if female_score >= male_score else 'male'
+
+
 class GenderDetector:
     def __init__(self):
         """Initialize gender detection model"""
         try:
             import audonnx
             import audeer
-            import torch
-
             print("[INFO] Loading gender detection model...")
 
             # Download and cache model
             model_url = 'https://zenodo.org/record/7761387/files/w2v2-L-robust-6-age-gender.25c844af-1.1.1.zip'
-            model_dir = SCRIPT_DIR / 'models' / 'gender_detector'
+            model_dir = Path(os.getenv(
+                "BINDING_GENDER_DETECTOR_DIR",
+                SCRIPT_DIR / "runs" / "cache" / "gender_detector",
+            ))
             model_dir.mkdir(parents=True, exist_ok=True)
 
             model_file = model_dir / 'model.onnx'
@@ -78,10 +84,14 @@ class GenderDetector:
                 print("[INFO] Model downloaded and extracted")
 
             # Load model
-            self.model = audonnx.load(str(model_dir))
+            device = os.getenv("BINDING_GENDER_DEVICE", "cpu")
+            self.model = audonnx.load(str(model_dir), device=device)
+            providers = self.model.sess.get_providers()
+            if device.startswith("cuda") and providers[0] != "CUDAExecutionProvider":
+                raise RuntimeError(f"requested {device}, but ONNX providers are {providers}")
             self.sampling_rate = 16000
 
-            print("[INFO] Gender detection model loaded successfully")
+            print(f"[INFO] Gender detection model loaded successfully ({providers[0]})")
 
         except Exception as e:
             print(f"[ERROR] Failed to load gender detection model: {e}")
@@ -100,8 +110,6 @@ class GenderDetector:
         try:
             import soundfile as sf
             import numpy as np
-            import torch
-            import torch.nn.functional as F
 
             # Read audio file
             signal, sr = sf.read(wav_path)
@@ -123,16 +131,17 @@ class GenderDetector:
             gender_logits = output['logits_gender'][0]
 
             # Convert to probabilities
-            probs = F.softmax(torch.tensor(gender_logits), dim=-1).numpy()
+            shifted_logits = gender_logits - np.max(gender_logits)
+            exp_logits = np.exp(shifted_logits)
+            probs = exp_logits / exp_logits.sum()
 
             # Extract scores (index 0=female, 1=male, 2=child)
             female_score = float(probs[0])
             male_score = float(probs[1])
             child_score = float(probs[2])
 
-            # Predict gender based on higher score
-            labels = ('female', 'male', 'child')
-            predicted_gender = labels[int(np.argmax(probs))]
+            # Gender is binary; retain child_score only as raw model metadata.
+            predicted_gender = binary_gender_label(female_score, male_score)
 
             return predicted_gender, male_score, female_score, child_score
 
@@ -211,11 +220,16 @@ def merge_with_metadata(results: List[Dict], metadata_df: Optional[pd.DataFrame]
 
 
 def compute_statistics(df: pd.DataFrame) -> Dict:
-    """Compute paper-primary and adult-only gender statistics."""
+    """Compute binary female/male gender statistics."""
     stats = {}
-    classifier_df = df[df['predicted_gender'].isin(['female', 'male', 'child'])]
-    adult_df = df[df['predicted_gender'].isin(['female', 'male'])]
-    excluded_counts = df[~df['predicted_gender'].isin(['female', 'male', 'child'])]['predicted_gender'].value_counts()
+    if (df['predicted_gender'] == 'child').any():
+        raise ValueError("child labels must be recomputed from female_score and male_score")
+    classifier_df = df[df['predicted_gender'].isin(['female', 'male'])]
+    excluded_counts = df[~df['predicted_gender'].isin(['female', 'male'])]['predicted_gender'].value_counts()
+    conditional_scores = None
+    if {'female_score', 'male_score'}.issubset(df.columns):
+        denominator = df['female_score'] + df['male_score']
+        conditional_scores = (df.loc[denominator > 0, 'female_score'] / denominator[denominator > 0])
 
     # Overall distribution
     overall_counts = classifier_df['predicted_gender'].value_counts()
@@ -225,9 +239,8 @@ def compute_statistics(df: pd.DataFrame) -> Dict:
         'counts': overall_counts.to_dict(),
         'percentages': overall_pct.to_dict(),
         'total': len(classifier_df),
-        'adult_total': len(adult_df),
         'female_probability': overall_counts.get('female', 0) / len(classifier_df) if len(classifier_df) else float('nan'),
-        'adult_female_probability': overall_counts.get('female', 0) / len(adult_df) if len(adult_df) else float('nan'),
+        'conditional_female_score': conditional_scores.mean() if conditional_scores is not None else float('nan'),
         'excluded': excluded_counts.to_dict(),
     }
 
@@ -236,7 +249,6 @@ def compute_statistics(df: pd.DataFrame) -> Dict:
         trait_stats = {}
         for trait in df['trait'].unique():
             trait_df = classifier_df[classifier_df['trait'] == trait]
-            trait_adult_df = adult_df[adult_df['trait'] == trait]
             trait_counts = trait_df['predicted_gender'].value_counts()
             trait_pct = trait_df['predicted_gender'].value_counts(normalize=True) * 100
 
@@ -250,9 +262,7 @@ def compute_statistics(df: pd.DataFrame) -> Dict:
                 'percentages': trait_pct.to_dict(),
                 'female_male_ratio': ratio,
                 'female_probability': female_count / len(trait_df) if len(trait_df) else float('nan'),
-                'adult_female_probability': female_count / len(trait_adult_df) if len(trait_adult_df) else float('nan'),
                 'total': len(trait_df),
-                'adult_total': len(trait_adult_df),
             }
 
         stats['by_trait'] = trait_stats
@@ -262,7 +272,6 @@ def compute_statistics(df: pd.DataFrame) -> Dict:
         keyword_stats = {}
         for keyword in df['keywords'].unique():
             kw_df = classifier_df[classifier_df['keywords'] == keyword]
-            kw_adult_df = adult_df[adult_df['keywords'] == keyword]
             kw_counts = kw_df['predicted_gender'].value_counts()
             kw_pct = kw_df['predicted_gender'].value_counts(normalize=True) * 100
 
@@ -276,9 +285,7 @@ def compute_statistics(df: pd.DataFrame) -> Dict:
                 'percentages': kw_pct.to_dict(),
                 'female_male_ratio': ratio,
                 'female_probability': female_count / len(kw_df) if len(kw_df) else float('nan'),
-                'adult_female_probability': female_count / len(kw_adult_df) if len(kw_adult_df) else float('nan'),
                 'total': len(kw_df),
-                'adult_total': len(kw_adult_df),
             }
 
         stats['by_keyword'] = keyword_stats
@@ -296,9 +303,8 @@ def save_statistics(stats: Dict, output_dir: Path):
         'Percentage': [stats['overall']['percentages'].get(g, 0) for g in stats['overall']['counts'].keys()]
     })
     overall_df['Classified N'] = stats['overall']['total']
-    overall_df['Adult N'] = stats['overall']['adult_total']
-    overall_df['Paper Female Probability'] = stats['overall']['female_probability']
-    overall_df['Adult Female Probability'] = stats['overall']['adult_female_probability']
+    overall_df['Binary Female Probability'] = stats['overall']['female_probability']
+    overall_df['Conditional Female Score'] = stats['overall']['conditional_female_score']
     overall_df['Unknown/Other N'] = sum(stats['overall']['excluded'].values())
     overall_csv = output_dir / 'overall_gender_distribution.csv'
     overall_df.to_csv(overall_csv, index=False)
@@ -312,14 +318,11 @@ def save_statistics(stats: Dict, output_dir: Path):
                 'trait': trait,
                 'female_count': trait_data['counts'].get('female', 0),
                 'male_count': trait_data['counts'].get('male', 0),
-                'child_count': trait_data['counts'].get('child', 0),
                 'female_pct': trait_data['percentages'].get('female', 0),
                 'male_pct': trait_data['percentages'].get('male', 0),
                 'female_male_ratio': trait_data['female_male_ratio'],
-                'paper_female_probability': trait_data['female_probability'],
-                'adult_female_probability': trait_data['adult_female_probability'],
+                'female_probability': trait_data['female_probability'],
                 'classified_total': trait_data['total'],
-                'adult_total': trait_data['adult_total'],
             }
             trait_rows.append(row)
 
@@ -336,14 +339,11 @@ def save_statistics(stats: Dict, output_dir: Path):
                 'keyword': keyword,
                 'female_count': kw_data['counts'].get('female', 0),
                 'male_count': kw_data['counts'].get('male', 0),
-                'child_count': kw_data['counts'].get('child', 0),
                 'female_pct': kw_data['percentages'].get('female', 0),
                 'male_pct': kw_data['percentages'].get('male', 0),
                 'female_male_ratio': kw_data['female_male_ratio'],
-                'paper_female_probability': kw_data['female_probability'],
-                'adult_female_probability': kw_data['adult_female_probability'],
+                'female_probability': kw_data['female_probability'],
                 'classified_total': kw_data['total'],
-                'adult_total': kw_data['adult_total'],
             }
             keyword_rows.append(row)
 
@@ -361,10 +361,10 @@ def print_summary(stats: Dict):
 
     # Overall
     print("\n[Overall Gender Distribution]")
-    print(f"Classifier outcomes: {stats['overall']['total']} (adult: {stats['overall']['adult_total']})")
+    print(f"Binary gender outcomes: {stats['overall']['total']}")
     print(f"Unknown/other outcomes: {sum(stats['overall']['excluded'].values())}")
-    print(f"Paper-primary P(Female): {stats['overall']['female_probability']:.4f}")
-    print(f"Adult-only P(Female): {stats['overall']['adult_female_probability']:.4f}")
+    print(f"Binary P(Female): {stats['overall']['female_probability']:.4f}")
+    print(f"Conditional female score P(F|F or M): {stats['overall']['conditional_female_score']:.4f}")
     for gender, count in stats['overall']['counts'].items():
         pct = stats['overall']['percentages'].get(gender, 0)
         print(f"  {gender.capitalize()}: {count} ({pct:.2f}%)")
@@ -372,7 +372,7 @@ def print_summary(stats: Dict):
     # By trait
     if 'by_trait' in stats:
         print("\n[Gender Distribution by Trait]")
-        for trait, trait_data in sorted(stats['by_trait'].items()):
+        for trait, trait_data in sorted(stats['by_trait'].items(), key=lambda item: str(item[0])):
             print(f"\n  {trait}:")
             print(f"    Total: {trait_data['total']}")
             for gender, count in trait_data['counts'].items():

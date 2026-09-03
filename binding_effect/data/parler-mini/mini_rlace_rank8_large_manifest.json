@@ -1,0 +1,42 @@
+{
+  "protocol_id": "parler-mini-rlace-rank8-large-v1",
+  "model": "parler-mini",
+  "model_id": "parler-tts/parler-tts-mini-v1",
+  "model_revision": "0392b9451a601e528fd863bbb0598431fee810d9",
+  "batch_size": 8,
+  "generation_mode": "batched_ordered_content_hash_with_trailing_zero_trim",
+  "methods": [
+    {
+      "name": "original",
+      "intervention": null,
+      "reuse_stage1": "results/parler-mini/original/stage1",
+      "reuse_stage2": "results/parler-mini/original/stage2"
+    },
+    {
+      "name": "rlace-rank-8",
+      "artifact": "data/parler-mini/artifacts/parler-mini-rlace-rank-8.pt",
+      "artifact_sha256": "b2f1e366e70a8b5455125bb5f6634bc8aee482375439ade5cc143e132ea5187a",
+      "bypass": "regex",
+      "output_stage1": "results/parler-mini/rlace-rank-8/stage1",
+      "output_stage2": "results/parler-mini/rlace-rank-8/stage2"
+    }
+  ],
+  "stage1": {
+    "status": {"count": 200, "sha256": "ff729a1bace361d8bed732a1d27ad58bd0646eaf270eaadd69670f86ed6f88b9"},
+    "career": {"count": 2700, "sha256": "faffa2b10ce4cdc201054fe6470270028c2a9f373d5c9ba60fd521ff45ead1fd"},
+    "persona": {"count": 4000, "sha256": "ee973d75bc12118f0165a658c64d6ff77ea49561b5bbbd0383254381a067469f"},
+    "total_per_method": 6900
+  },
+  "stage2": {
+    "selection": "frozen_original_stage1_cells",
+    "two_axis": {"count": 3200, "sha256": "3a5d47c8390268f8c8451a42a54ba3ec3c6deeb3d4fef82e29e90470bf12cbbb"},
+    "three_axis": {"count": 3200, "sha256": "c25771dc45a498e1d331ea145420e228a8e014db7cb30f6d76bce755e2e15cf8"},
+    "total_per_method": 6400
+  },
+  "prompts_per_method": 13300,
+  "existing_wavs": 26600,
+  "new_wavs": 13300,
+  "total_analysis_wavs": 39900,
+  "runner": "run_mini_rlace_rank8_large.sh",
+  "analysis_runner": "analyze_mini_rlace_rank8_large.sh"
+}

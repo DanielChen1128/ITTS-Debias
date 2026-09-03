@@ -1,0 +1,11 @@
+{
+  "protocol_id": "voxinstruct-balanced-paired-transcript-anchors-v1",
+  "source": "data/parler-large/training_anchors.json",
+  "source_sha256": "6a12a58f66874bac97606aee834325ebf8782a42457f9f10820b2bca0c1c26d6",
+  "anchor_sha256": "351da09e3feb9dfc1c3a875174c30c93507d79a6c1541e7d7ffbaef3d51a092e",
+  "records": 5040,
+  "pairs": 2520,
+  "transcripts": 14,
+  "pair_matched_transcript": true,
+  "evaluation_prompts_used": false
+}

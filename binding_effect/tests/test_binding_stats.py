@@ -2,7 +2,7 @@ import math
 import unittest
 
 from binding_stats import (
-    binary_labels, interaction, log_odds, paper_labels, permutation_test,
+    binary_labels, interaction, log_odds, permutation_test,
     validate_interaction_spec,
 )
 from semantic_bias import cohens_d, write_result
@@ -44,15 +44,6 @@ class StatisticsTests(unittest.TestCase):
         values, excluded = binary_labels(["female", "male", "child", "unknown", "bad"])
         self.assertEqual(values, [1, 0])
         self.assertEqual(excluded, {"child": 1, "unknown": 1, "other": 1})
-
-    def test_paper_denominator_includes_child_as_non_female(self):
-        values, adult, counts, excluded = paper_labels(
-            ["female", "male", "child", "unknown"]
-        )
-        self.assertEqual(values, [1, 0, 0])
-        self.assertEqual(adult, [1, 0])
-        self.assertEqual(counts, {"female": 1, "male": 1, "child": 1})
-        self.assertEqual(excluded, {"unknown": 1, "other": 0})
 
     def test_cohens_d(self):
         self.assertGreater(cohens_d([2, 3, 4], [0, 1, 2]), 1)

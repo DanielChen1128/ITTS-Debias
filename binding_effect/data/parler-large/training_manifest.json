@@ -1,0 +1,26 @@
+{
+  "protocol_id": "parler-large-balanced-anchors-v1",
+  "seed": 20260828,
+  "training_only": true,
+  "status_in_training": false,
+  "adult_gender_terms_only": true,
+  "context_counts": {
+    "career": 27,
+    "career+persona": 112,
+    "neutral": 1,
+    "persona": 40
+  },
+  "contexts": 180,
+  "templates": 14,
+  "genders": 2,
+  "anchors": 5040,
+  "anchor_sha256": "6a12a58f66874bac97606aee834325ebf8782a42457f9f10820b2bca0c1c26d6",
+  "held_out_template_sets": [
+    "gate_dev",
+    "gate_test"
+  ],
+  "source_sha256": {
+    "description_career_bias.json": "faffa2b10ce4cdc201054fe6470270028c2a9f373d5c9ba60fd521ff45ead1fd",
+    "descriptions_persona_bias.json": "ee973d75bc12118f0165a658c64d6ff77ea49561b5bbbd0383254381a067469f"
+  }
+}

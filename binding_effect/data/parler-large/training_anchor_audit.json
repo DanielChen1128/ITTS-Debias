@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "records": 5040,
+  "contexts": 180,
+  "templates": 14,
+  "pairs": 2520,
+  "gender_counts": {
+    "female": 2520,
+    "male": 2520
+  },
+  "descriptor_coverage": 67,
+  "status_records": 0,
+  "errors": []
+}

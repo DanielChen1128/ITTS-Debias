@@ -64,6 +64,51 @@ def collect_pooled_activations(model, tokenizer, texts, *, batch_size=16, device
     return torch.cat(batches, dim=0)
 
 
+def collect_pooled_layer_activations(model, tokenizer, texts, *, batch_size=16, device=None):
+    """Return masked means for the embedding output and every encoder layer."""
+    if not texts:
+        raise ValueError("at least one description is required")
+    if device is None:
+        device = next(model.parameters()).device
+    batches = None
+    with torch.inference_mode():
+        for start in range(0, len(texts), batch_size):
+            tokens = tokenizer(
+                texts[start : start + batch_size], padding=True, truncation=True,
+                return_tensors="pt",
+            )
+            input_ids = tokens["input_ids"].to(device)
+            attention_mask = tokens["attention_mask"].to(device)
+            outputs = model.get_text_encoder()(
+                input_ids=input_ids, attention_mask=attention_mask,
+                output_hidden_states=True, return_dict=True,
+            )
+            states = outputs.hidden_states
+            if not states:
+                raise ValueError("text encoder did not return hidden states")
+            # T5-XL intermediate fp16 states can overflow while summing tokens.
+            pooled = [masked_mean(state.float(), attention_mask).cpu() for state in states]
+            if batches is None:
+                batches = [[] for _ in pooled]
+            if len(batches) != len(pooled):
+                raise ValueError("text encoder returned an inconsistent layer count")
+            for index, values in enumerate(pooled):
+                batches[index].append(values)
+    return [torch.cat(values, dim=0) for values in batches]
+
+
+def erase_description_states(states, attention_mask, eraser, *, mode="token"):
+    """Apply an eraser token-wise or as one pooled-mean shift per prompt."""
+    if mode == "token":
+        erased = eraser(states)
+    elif mode == "pooled-shift":
+        pooled = masked_mean(states, attention_mask)
+        erased = states + (eraser(pooled) - pooled).unsqueeze(1)
+    else:
+        raise ValueError("intervention_mode must be 'token' or 'pooled-shift'")
+    return erased * attention_mask[..., None].to(erased.dtype)
+
+
 def generate_with_eraser(
     model,
     eraser,
@@ -72,17 +117,78 @@ def generate_with_eraser(
     attention_mask,
     *,
     bypass_explicit=True,
+    intervention_strength=1.0,
+    intervention_mode="token",
+    return_intervention=False,
     **generation_kwargs,
 ):
     """Generate from precomputed encoder states, optionally erased by LEACE."""
     from transformers.modeling_outputs import BaseModelOutput
 
     states = encode_description_states(model, input_ids, attention_mask)
-    if not (bypass_explicit and has_explicit_gender_command(description)):
-        states = eraser(states)
+    bypassed = bypass_explicit and has_explicit_gender_command(description)
+    bypass_mode = "regex" if bypass_explicit else "disabled"
+    if not intervention_strength >= 0.0:
+        raise ValueError("intervention_strength must be non-negative")
+    if not bypassed:
+        erased = erase_description_states(
+            states, attention_mask, eraser, mode=intervention_mode,
+        )
+        states = states + intervention_strength * (erased - states)
         states = states * attention_mask[..., None].to(states.dtype)
-    return model.generate(
+    generation = model.generate(
         encoder_outputs=BaseModelOutput(last_hidden_state=states),
         attention_mask=attention_mask,
         **generation_kwargs,
     )
+    if not return_intervention:
+        return generation
+    return generation, {
+        "bypass_mode": bypass_mode,
+        "bypassed": bool(bypassed),
+        "eraser_applied": not bypassed,
+        "intervention_strength": intervention_strength,
+        "intervention_mode": intervention_mode,
+    }
+
+
+def generate_with_eraser_batch(
+    model, eraser, descriptions, input_ids, attention_mask, *, bypass_explicit=True,
+    intervention_strength=1.0, intervention_mode="token",
+    return_intervention=False,
+    **generation_kwargs,
+):
+    """Batched counterpart that applies bypass decisions independently per row."""
+    from transformers.modeling_outputs import BaseModelOutput
+
+    states = encode_description_states(model, input_ids, attention_mask)
+    bypassed = torch.tensor(
+        [bypass_explicit and has_explicit_gender_command(text) for text in descriptions],
+        device=states.device,
+    )
+    bypass_mode = "regex" if bypass_explicit else "disabled"
+    if not intervention_strength >= 0.0:
+        raise ValueError("intervention_strength must be non-negative")
+    transformed = erase_description_states(
+        states, attention_mask, eraser, mode=intervention_mode,
+    )
+    erased = states + intervention_strength * (transformed - states)
+    states = torch.where(bypassed[:, None, None], states, erased)
+    states = states * attention_mask[..., None].to(states.dtype)
+    generation = model.generate(
+        encoder_outputs=BaseModelOutput(last_hidden_state=states), attention_mask=attention_mask,
+        **generation_kwargs,
+    )
+    if not return_intervention:
+        return generation
+    records = [
+        {
+            "bypass_mode": bypass_mode,
+            "bypassed": bool(row_bypassed.item()),
+            "eraser_applied": not bool(row_bypassed.item()),
+            "intervention_strength": intervention_strength,
+            "intervention_mode": intervention_mode,
+        }
+        for row_bypassed in bypassed
+    ]
+    return generation, records
