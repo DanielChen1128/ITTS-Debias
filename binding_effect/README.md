@@ -65,6 +65,21 @@ VoxInstruct uses separate AR and NAR artifacts fit from paired descriptions and
 pair-matched neutral transcripts. Formal outputs are isolated under
 `results/voxinstruct/`.
 
+### PromptTTS++ Smoke / Batch Runs
+
+PromptTTS++ is wired through the shared generation entry point with the local
+backend checkout and pretrained weights:
+
+```bash
+python generate_wav.py --model promptttspp --config model_config.json \
+  --json descriptions/promptttspp_test.json --output results/promptttspp_test
+STAGE=stage1 bash run_promptttspp_full.sh
+STAGE=stage2 bash run_promptttspp_full.sh
+```
+
+PromptTTS++ uses the same prompt protocol and can reuse the shared analysis
+helpers once the stage outputs are complete.
+
 ### Unified Constant Steering Queue
 
 Complete Mini and VoxInstruct `2x`, retain the calibrated VoxInstruct
@@ -78,6 +93,19 @@ bash status_unified_constant_steering.sh
 The queue waits for existing VoxInstruct work, assigns Mini to the local GPU and
 VoxInstruct `AR2 + NAR2` to the RTX 5090, verifies manifests and WAV counts, and
 then runs matched gender, interaction, and 500-pair quality reports.
+
+### B200 Extension Ablations
+
+The staged pair-count and hyperparameter ablations for Parler Mini/Large and
+VoxInstruct are specified in [`B200_EXTENSION_EXPERIMENTS.md`](B200_EXTENSION_EXPERIMENTS.md).
+The B200 queue deliberately excludes PromptTTS++ because that host does not have
+its backend or weights. Start with the 500-prompt screen before any additional
+full 13,300-prompt conditions:
+
+```bash
+bash run_b200_extension_queue.sh screen
+bash run_b200_extension_queue.sh scaling-full
+```
 
 ## Evaluation
 
