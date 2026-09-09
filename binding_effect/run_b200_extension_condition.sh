@@ -58,14 +58,13 @@ prepare_vox_artifacts() {
 
 case "$MODEL" in
   parler-mini)
-    [[ "$PAIRS" == "270" ]] || { echo "[ERROR] Parler Mini has exactly 270 available pairs" >&2; exit 2; }
     STRENGTH="${STRENGTH:?Set STRENGTH for Parler}"
     base="data/extension-ablation/parler-mini"
-    artifact="$base/artifacts/pairs-270-female-to-male.pt"
+    artifact="$base/artifacts/pairs-$PAIRS-female-to-male.pt"
     mkdir -p "$base/artifacts"
     prepare_parler_artifact "$PARLER_MINI_MODEL_ID" "$PARLER_MINI_REVISION" \
-      "data/parler-mini/training_anchors.json" "$base/full-pooled-activations.pt" "$base/subsets" "$artifact"
-    condition="anchor-pairs-270-strength-$(slug "$STRENGTH")"
+      "data/parler-large/training_anchors.json" "$base/full-pooled-activations.pt" "$base/subsets" "$artifact"
+    condition="anchor-pairs-$PAIRS-strength-$(slug "$STRENGTH")"
     ;;
   parler-large)
     STRENGTH="${STRENGTH:?Set STRENGTH for Parler}"

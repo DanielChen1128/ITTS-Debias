@@ -30,20 +30,21 @@ case "$PHASE" in
     for model in parler-mini parler-large voxinstruct; do
       "$PYTHON_BIN" build_extension_screen.py --model "$model"
     done
-    for strength in 0.5 1 1.5 2 2.5; do run_condition parler-mini screen 270 "$strength"; done
-    for pairs in 300 500 1000 1500; do run_condition parler-large screen "$pairs" 2; done
-    for strength in 0.5 1 1.5 2.5 3; do run_condition parler-large screen 1500 "$strength"; done
-    for pairs in 300 500 1000 1500; do run_condition voxinstruct screen "$pairs" 2 2; done
+    for pairs in 300 500 1000 1500 2000 2500; do run_condition parler-mini screen "$pairs" 2; done
+    for strength in 0.5 1 1.5 2.5; do run_condition parler-mini screen 2500 "$strength"; done
+    for pairs in 300 500 1000 1500 2000 2500; do run_condition parler-large screen "$pairs" 2; done
+    for strength in 0.5 1 1.5 2.5 3; do run_condition parler-large screen 2500 "$strength"; done
+    for pairs in 300 500 1000 1500 2000 2500; do run_condition voxinstruct screen "$pairs" 2 2; done
     for ar in 2 4 6; do
       for nar in 1 2 3; do
-        [[ "$ar/$nar" == "2/2" ]] || run_condition voxinstruct screen 1500 "$ar" "$nar"
+        [[ "$ar/$nar" == "2/2" ]] || run_condition voxinstruct screen 2500 "$ar" "$nar"
       done
     done
     ;;
   scaling-full)
-    run_condition parler-mini full 270 2
-    for pairs in 300 500 1000 1500; do run_condition parler-large full "$pairs" 2; done
-    for pairs in 300 500 1000 1500; do run_condition voxinstruct full "$pairs" 2 2; done
+    for pairs in 300 500 1000 1500 2000 2500; do run_condition parler-mini full "$pairs" 2; done
+    for pairs in 300 500 1000 1500 2000 2500; do run_condition parler-large full "$pairs" 2; done
+    for pairs in 300 500 1000 1500 2000 2500; do run_condition voxinstruct full "$pairs" 2 2; done
     ;;
   *) echo "[ERROR] phase must be screen or scaling-full" >&2; exit 2 ;;
 esac

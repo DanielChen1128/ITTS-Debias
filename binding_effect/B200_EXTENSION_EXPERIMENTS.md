@@ -10,21 +10,22 @@ The study is staged to avoid a full factorial over 13,300 prompts.
 
 | Phase | Conditions | Outputs per condition | Total WAVs | Purpose |
 |---|---:|---:|---:|---|
-| Screen | 26 | 500 | 13,000 | Select useful strengths and reject saturation |
-| Pair scaling | 9 | 13,300 | 119,700 | Main nested-pair ablation |
+| Screen | 35 | 500 | 17,500 | Select useful strengths and reject saturation |
+| Pair scaling | 18 | 13,300 | 239,400 | Main nested-pair ablation |
 | Selected full | at most 6 | 13,300 | at most 79,800 | Confirm up to two screened settings per model |
 
 The fixed screening matrix is:
 
 | Model | Pair counts | Hyperparameters | Conditions |
 |---|---|---|---:|
-| Parler Mini | 270 only | strength `.5, 1, 1.5, 2, 2.5` | 5 |
-| Parler Large scaling | `300, 500, 1000, 1500` | strength `2` | 4 |
-| Parler Large strength | 1500 | `.5, 1, 1.5, 2, 2.5, 3` | 6 total, 5 additional |
-| VoxInstruct scaling | `300, 500, 1000, 1500` | AR/NAR `2/2` | 4 |
-| VoxInstruct grid | 1500 | AR `2,4,6` x NAR `1,2,3` | 9 total, 8 additional |
+| Parler Mini scaling | `300, 500, 1000, 1500, 2000, 2500` | strength `2` | 6 |
+| Parler Mini strength | 2500 | `.5, 1, 1.5, 2, 2.5` | 5 total, 4 additional |
+| Parler Large scaling | `300, 500, 1000, 1500, 2000, 2500` | strength `2` | 6 |
+| Parler Large strength | 2500 | `.5, 1, 1.5, 2, 2.5, 3` | 6 total, 5 additional |
+| VoxInstruct scaling | `300, 500, 1000, 1500, 2000, 2500` | AR/NAR `2/2` | 6 |
+| VoxInstruct grid | 2500 | AR `2,4,6` x NAR `1,2,3` | 9 total, 8 additional |
 
-This is 26 unique screening conditions. Each model's 500-prompt screen contains
+This is 35 unique screening conditions. Each model's 500-prompt screen contains
 100 deterministically selected prompts from status, career, persona, two-axis,
 and three-axis strata. Mini retains its model-specific Stage-2 prompt pool;
 Large and Vox use the Large Stage-2 protocol, matching the existing evaluation.
@@ -32,9 +33,12 @@ The screen must only be used for candidate selection; final numbers come from
 the frozen 13,300-prompt benchmark.
 
 The pair-scaling subsets are deterministic and nested. A 300-pair subset is
-contained in the 500-, 1000-, and 1500-pair subsets. Parler Mini remains at 270
-pairs because its current source pool contains exactly 270 matched pairs. Do
-not relabel it as 300. Parler Large and VoxInstruct use the 2,520-pair pool.
+contained in the 500-, 1000-, 1500-, 2000-, and 2500-pair subsets. All three
+models use the same 2,520-pair description pool, encoded independently through
+each model's frozen conditioning path. This replaces Mini's earlier 270-pair
+pool for the extension study. The 2500-pair setting is a near-replication of the
+successful historical Large 2520-pair setting, but the two must remain labeled
+separately because 20 pairs are excluded by the fixed nested sampling order.
 
 ## Clone And Environment
 
@@ -81,13 +85,13 @@ model. Fitting first extracts the full aligned activation cache; later pair
 counts reuse it and are cheap.
 
 ```bash
-MODEL=parler-mini ACTION=fit PAIRS=270 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
-MODEL=parler-large ACTION=fit PAIRS=1500 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
-MODEL=voxinstruct ACTION=fit PAIRS=1500 AR_STRENGTH=2 NAR_STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=parler-mini ACTION=fit PAIRS=2500 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=parler-large ACTION=fit PAIRS=2500 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=voxinstruct ACTION=fit PAIRS=2500 AR_STRENGTH=2 NAR_STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
 
-MODEL=parler-mini ACTION=screen PAIRS=270 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
-MODEL=parler-large ACTION=screen PAIRS=1500 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
-MODEL=voxinstruct ACTION=screen PAIRS=1500 AR_STRENGTH=2 NAR_STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=parler-mini ACTION=screen PAIRS=2500 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=parler-large ACTION=screen PAIRS=2500 STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=voxinstruct ACTION=screen PAIRS=2500 AR_STRENGTH=2 NAR_STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
 ```
 
 Check the three logs/manifests before starting the queue. Do not launch multiple
@@ -107,7 +111,7 @@ The queue runs sequentially on one GPU. The `.done` files under
 `runs/b200-extension/logs/` identify completed conditions. Generated audio is
 under `results/extension-ablation/`.
 
-After screening, classify the 13,000 WAVs and rank settings by:
+After screening, classify the 17,500 WAVs and rank settings by:
 
 1. global calibration error `abs(female_rate - 0.5)`;
 2. mean and worst-stratum calibration error;
@@ -148,8 +152,8 @@ Then run each selected strength/grid condition explicitly with `ACTION=full`.
 For example:
 
 ```bash
-MODEL=parler-large ACTION=full PAIRS=1500 STRENGTH=1.5 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
-MODEL=voxinstruct ACTION=full PAIRS=1500 AR_STRENGTH=4 NAR_STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=parler-large ACTION=full PAIRS=2500 STRENGTH=1.5 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
+MODEL=voxinstruct ACTION=full PAIRS=2500 AR_STRENGTH=4 NAR_STRENGTH=2 PYTHON_BIN="$PYTHON_BIN" bash run_b200_extension_condition.sh
 ```
 
 Do not choose these example values before inspecting the screen.
@@ -159,12 +163,12 @@ Do not choose these example values before inspecting the screen.
 Hardware, codec decoding, and output duration dominate runtime, so the first
 500-prompt smoke run is the timing calibration. If that run takes `T` hours:
 
-- complete screen: approximately `26T` GPU-hours;
-- nine-condition pair scaling: approximately `9 x 26.6T = 239.4T` GPU-hours;
+- complete screen: approximately `35T` GPU-hours;
+- 18-condition pair scaling: approximately `18 x 26.6T = 478.8T` GPU-hours;
 - each selected full condition: approximately `26.6T` GPU-hours.
 
-For example, if 500 prompts take 20 minutes, screening is about 8.7 GPU-hours,
-pair scaling about 79.8 GPU-hours, and each selected full condition about 8.9
+For example, if 500 prompts take 20 minutes, screening is about 11.7 GPU-hours,
+pair scaling about 159.6 GPU-hours, and each selected full condition about 8.9
 GPU-hours. These are throughput estimates, not guaranteed wall-clock times.
 Use the measured B200 smoke time in place of the example.
 
@@ -187,8 +191,10 @@ audio or model artifacts.
 
 The main pair-count figure should plot pair count against global calibration
 error, mean stratum error, worst-stratum error, and mean interaction magnitude.
-Report the 270-pair Mini point separately rather than on the common Large/Vox
-scaling curve. Put all 26 screening settings in supplementary material and only
+Plot all three models on the common six-point pair-count axis. Show the existing
+Large 2520-pair result as a separately marked historical reference rather than
+merging it with the new 2500-pair condition. Put all 35 screening settings in
+supplementary material and only
 the selected full settings in the main cross-model table. Utility evaluation
 remains paired against Original with the existing 500-prompt holdout and NI
 margins.
